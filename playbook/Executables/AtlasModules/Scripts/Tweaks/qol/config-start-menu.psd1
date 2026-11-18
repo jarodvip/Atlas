@@ -1,6 +1,10 @@
 @{
     Name          = 'Configure Start Menu'
     OnUpgrade     = 'Skip'
+    # ConfigureStartPins, the recommended-section policies and the Start layout are
+    # Windows 11. Windows 10 has no Configure Start Pins and its own Start policies, so
+    # the Windows 11 layout work is skipped there.
+    MinBuild      = 22000
     Description    = 'Configures the Start Menu pins and removes the frequent, recently-added and recommended lists.'
     Registry      = @(
         # Windows 11 24H2+ StartMenu.admx uses an enable value plus an expandable

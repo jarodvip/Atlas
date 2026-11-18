@@ -112,6 +112,7 @@
                 'disable-dynamic-lighting'
                 'disable-auto-app-archival'
                 'add-sharing-settings-shortcut'
+                'disable-resume'
                 # atlas-theme sets lock-screen policy; the theme itself is applied by
                 # Initialize-NewUser at first logon (interactive shell COM).
                 'appearance/atlas-theme'
@@ -131,6 +132,7 @@
                 'taskbar/disable-cloud-optimized-content'
                 'taskbar/disable-news-and-interests'
                 'taskbar/hide-task-view'
+                'taskbar/disable-windows-chat'
                 'taskbar/disable-copilot'
                 'taskbar/set-to-left'
                 'taskbar/end-task'

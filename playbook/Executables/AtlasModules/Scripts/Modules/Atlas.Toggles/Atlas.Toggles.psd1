@@ -10,6 +10,8 @@
         'Get-AtlasToggleDefinition'
         'Test-AtlasToggleDefinition'
         'Get-AtlasToggleStateWork'
+        'Get-AtlasToggleBuildSkipReason'
+        'Test-AtlasToggleApplicable'
         # Engine
         'Invoke-AtlasToggle'
         # Machine work of one state, invoked from other privileged callers

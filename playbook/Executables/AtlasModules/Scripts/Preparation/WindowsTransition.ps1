@@ -223,7 +223,7 @@ function Test-AtlasTransitionItemValue($Item, $Entry) {
     switch ($Item.Id) {
         'pin.TargetReleaseVersion' { return $Entry.data -imatch '^\d{2}H\d$' }
         'pin.TargetReleaseVersionInfo' { return $Entry.data -imatch '^(\d{2}H\d)?$' }
-        'pin.ProductVersion' { return Test-AtlasTransitionString $Entry.data 25 }
+        'pin.ProductVersion' { return [string]$Entry.data -cin @('Windows 10', 'Windows 11') }
         default { return Test-AtlasTransitionString $Entry.data 64 }
     }
 }
@@ -1398,16 +1398,16 @@ function Invoke-AtlasWindowsUpdateLift($Journal) {
 # tweak. It retargets; it never removes the pin and never touches safeguard
 # policies. The key is created only when missing: recreating it would drop the
 # other policy values beside it.
-function Set-AtlasFeatureUpdateTarget([Parameter(Mandatory = $true)][ValidatePattern('^\d{2}H\d$')][string]$Release) {
+function Set-AtlasFeatureUpdateTarget([Parameter(Mandatory = $true)][ValidatePattern('^\d{2}H\d$')][string]$Release, [ValidateSet('Windows 10', 'Windows 11')][string]$ProductVersion = 'Windows 11') {
     $path = 'HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate'
     if (-not (Test-Path -LiteralPath $path)) { New-Item -Path $path -Force | Out-Null }
     New-ItemProperty -Path $path -Name 'TargetReleaseVersion' -Value 1 -PropertyType DWord -Force | Out-Null
-    New-ItemProperty -Path $path -Name 'ProductVersion' -Value 'Windows 11' -PropertyType String -Force | Out-Null
+    New-ItemProperty -Path $path -Name 'ProductVersion' -Value $ProductVersion -PropertyType String -Force | Out-Null
     New-ItemProperty -Path $path -Name 'TargetReleaseVersionInfo' -Value $Release -PropertyType String -Force | Out-Null
     $written = Get-ItemProperty -LiteralPath $path -ErrorAction Stop
     $names = @($written.PSObject.Properties.Name)
     if ($names -notcontains 'TargetReleaseVersion' -or $written.TargetReleaseVersion -ne 1 -or
-        $names -notcontains 'ProductVersion' -or $written.ProductVersion -cne 'Windows 11' -or
+        $names -notcontains 'ProductVersion' -or $written.ProductVersion -cne $ProductVersion -or
         $names -notcontains 'TargetReleaseVersionInfo' -or $written.TargetReleaseVersionInfo -cne $Release) {
         throw "Windows did not keep the feature-update target $Release."
     }

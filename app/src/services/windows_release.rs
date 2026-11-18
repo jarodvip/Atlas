@@ -13,8 +13,12 @@ use serde::Deserialize;
 
 use super::system::SystemInfo;
 
-const SOURCE_URL: &str =
+const WINDOWS11_SOURCE_URL: &str =
     "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information";
+/// The consolidated release page carries 22H2 (19045) and older; the Windows 11 page
+/// does not, and the consolidated page carries no 24H2-or-newer releases.
+const CONSOLIDATED_SOURCE_URL: &str =
+    "https://learn.microsoft.com/en-us/windows/release-health/release-information";
 /// The bundled list of public releases, shared with the PowerShell side.
 pub(super) const CATALOG: &str =
     include_str!("../../../playbook/Executables/AtlasModules/Scripts/Compatibility/windows-releases.json");
@@ -33,6 +37,9 @@ pub enum Status {
 
 #[derive(Deserialize)]
 struct Catalog {
+    #[serde(rename = "schemaVersion")]
+    #[allow(dead_code)]
+    schema_version: u32,
     releases: Vec<Release>,
 }
 
@@ -43,9 +50,31 @@ struct Release {
     available_date: String,
 }
 
-/// Supported builds and their release names; must match the catalog's
-/// supportedReleases.
-const BUILD_FAMILIES: &[(u32, &str)] = &[(26200, "25H2"), (26300, "26H2")];
+/// One supported release family: OS build, release name and the official page whose
+/// table lists it. Must match the catalog's supportedReleases and the PowerShell
+/// Get-AtlasWindowsReleaseFamily.
+struct ReleaseFamily {
+    build: u32,
+    release: &'static str,
+    source_url: &'static str,
+}
+
+const BUILD_FAMILIES: &[ReleaseFamily] = &[
+    ReleaseFamily { build: 19045, release: "22H2", source_url: CONSOLIDATED_SOURCE_URL },
+    ReleaseFamily { build: 26200, release: "25H2", source_url: WINDOWS11_SOURCE_URL },
+    ReleaseFamily { build: 26300, release: "26H2", source_url: WINDOWS11_SOURCE_URL },
+];
+
+/// The official pages the online check reads, one request each.
+fn source_pages() -> Vec<&'static str> {
+    let mut pages: Vec<&'static str> = Vec::new();
+    for family in BUILD_FAMILIES {
+        if !pages.contains(&family.source_url) {
+            pages.push(family.source_url);
+        }
+    }
+    pages
+}
 
 fn snapshot() -> &'static HashSet<String> {
     static SNAPSHOT: OnceLock<HashSet<String>> = OnceLock::new();
@@ -98,7 +127,7 @@ fn classify_with(
 }
 
 pub fn classify(build: u32, revision: u32, build_lab: &str) -> Status {
-    if !BUILD_FAMILIES.iter().any(|family| family.0 == build) || revision == 0 {
+    if !BUILD_FAMILIES.iter().any(|family| family.build == build) || revision == 0 {
         return Status::Unknown;
     }
     classify_with(
@@ -123,13 +152,39 @@ fn latest() -> Result<HashSet<String>> {
     {
         return Ok(cached.versions.clone());
     }
+    // One request per official page. A page that fails to load contributes no
+    // versions for its builds rather than failing the other page's lookup.
+    let mut versions: HashSet<String> = HashSet::new();
+    let mut loaded = 0usize;
+    for page in source_pages() {
+        match fetch_page(page) {
+            Ok(text) => {
+                loaded += 1;
+                if let Ok(found) = parse_markdown(&text, chrono::Utc::now().date_naive()) {
+                    versions.extend(found);
+                }
+            }
+            Err(error) => log::debug!("Windows release page {page} is unavailable: {error}"),
+        }
+    }
+    if loaded == 0 {
+        anyhow::bail!("No Microsoft Windows release information page could be read");
+    }
+    ensure!(!versions.is_empty(), "No supported public Windows release table found in Microsoft's response");
+    *cache = Some(CachedReleases { checked_at: Instant::now(), versions: versions.clone() });
+    Ok(versions)
+}
+
+/// Reads one official release page as Markdown, within the same limits as the
+/// PowerShell transport: HTTPS on learn.microsoft.com, no redirects and 1 MiB.
+fn fetch_page(page: &str) -> Result<String> {
     let config = ureq::Agent::config_builder()
         .timeout_global(Some(Duration::from_secs(15)))
         .max_redirects(0)
         .http_status_as_error(true)
         .build();
     let mut response = ureq::Agent::new_with_config(config)
-        .get(SOURCE_URL)
+        .get(page)
         .header("User-Agent", super::releases::USER_AGENT)
         .header("Accept", "text/markdown")
         .call()
@@ -141,10 +196,7 @@ fn latest() -> Result<HashSet<String>> {
         }),
         "Release information was not Markdown"
     );
-    let text = response.body_mut().with_config().limit(1024 * 1024).read_to_string()?;
-    let versions = parse_markdown(&text, chrono::Utc::now().date_naive())?;
-    *cache = Some(CachedReleases { checked_at: Instant::now(), versions: versions.clone() });
-    Ok(versions)
+    Ok(response.body_mut().with_config().limit(1024 * 1024).read_to_string()?)
 }
 
 /// A Markdown heading line without its `#` or `**` decoration.
@@ -154,10 +206,10 @@ fn heading(line: &str) -> &str {
 
 fn parse_markdown(text: &str, today: NaiveDate) -> Result<HashSet<String>> {
     let mut versions = HashSet::new();
-    for &(build, release) in BUILD_FAMILIES {
-        let section = format!("Version {release} (OS build {build})");
+    for family in BUILD_FAMILIES {
+        let section = format!("Version {} (OS build {})", family.release, family.build);
         if text.lines().any(|line| heading(line) == section) {
-            versions.extend(parse_release_section(text, today, build, &section)?);
+            versions.extend(parse_release_section(text, today, family.build, &section)?);
         }
     }
     ensure!(!versions.is_empty(), "No supported public Windows release table found in Microsoft's response");
@@ -235,7 +287,7 @@ fn parse_release_section(text: &str, today: NaiveDate, build: u32, section: &str
 
 /// The release name of a build Atlas supports, such as "26H2".
 pub fn release_name(build: u32) -> Option<&'static str> {
-    BUILD_FAMILIES.iter().find(|family| family.0 == build).map(|family| family.1)
+    BUILD_FAMILIES.iter().find(|family| family.build == build).map(|family| family.release)
 }
 
 /// A move between Windows releases through Windows Update. Microsoft
@@ -447,7 +499,7 @@ mod tests {
     #[test]
     fn the_catalog_lists_the_supported_build_families() {
         let catalog: serde_json::Value = serde_json::from_str(CATALOG).unwrap();
-        assert_eq!(catalog["schemaVersion"], 2);
+        assert_eq!(catalog["schemaVersion"], 3);
         let families: Vec<(u64, &str)> = catalog["supportedReleases"]
             .as_array()
             .unwrap()
@@ -455,13 +507,13 @@ mod tests {
             .map(|family| (family["build"].as_u64().unwrap(), family["release"].as_str().unwrap()))
             .collect();
         let expected: Vec<(u64, &str)> =
-            BUILD_FAMILIES.iter().map(|&(build, release)| (u64::from(build), release)).collect();
+            BUILD_FAMILIES.iter().map(|family| (u64::from(family.build), family.release)).collect();
         assert_eq!(families, expected);
     }
 
     #[test]
     fn catalogued_versions_are_released_and_prerelease_branches_are_refused() {
-        for (build, revision) in [(26200, 6584), (26300, 9457), (26300, 9550)] {
+        for (build, revision) in [(19045, 7846), (26200, 6584), (26300, 9457), (26300, 9550)] {
             assert_eq!(classify(build, revision, "ge_release"), Status::Released, "{build}.{revision}");
             // A promoted Insider build number only counts on a release branch.
             let insider = format!("{build}.1.amd64fre.rs_prerelease");
@@ -479,20 +531,37 @@ mod tests {
             | Release Preview Channel | | 2026-09-29 | 26300.9990 | |\n\
             **Version 25H2 (OS build 26200)**\n\
             | Servicing option | Update type | Availability date | Build | KB article |\n\
-            | General Availability Channel | | 2026-09-01 | 26200.9278 | |";
-        let today = NaiveDate::from_ymd_opt(2026, 9, 30).unwrap();
+            | General Availability Channel | | 2026-09-01 | 26200.9278 | |\n\
+            **Version 22H2 (OS build 19045)**\n\
+            | Servicing option | Update type | Availability date | Build | KB article |\n\
+            | General Availability Channel | | 2026-11-10 | 19045.7846 | |\n\
+            | Release Preview Channel | | 2026-11-10 | 19045.9990 | |";
+        let today = NaiveDate::from_ymd_opt(2026, 11, 30).unwrap();
         assert_eq!(
             parse_markdown(text, today).unwrap(),
-            HashSet::from(["10.0.26300.9457".into(), "10.0.26200.9278".into()])
+            HashSet::from([
+                "10.0.26300.9457".into(),
+                "10.0.26200.9278".into(),
+                "10.0.19045.7846".into()
+            ])
         );
         assert!(parse_markdown(&text.replace("26300.9457", "26200.9457"), today).is_err());
         assert!(parse_markdown(text, NaiveDate::from_ymd_opt(2026, 9, 28).unwrap()).is_err());
     }
 
     #[test]
+    fn each_family_names_the_page_that_lists_it() {
+        assert_eq!(BUILD_FAMILIES.len(), 3);
+        assert_eq!(release_name(19045), Some("22H2"));
+        assert_eq!(release_name(26200), Some("25H2"));
+        assert_eq!(release_name(26300), Some("26H2"));
+        assert_eq!(source_pages(), vec![CONSOLIDATED_SOURCE_URL, WINDOWS11_SOURCE_URL]);
+    }
+
+    #[test]
     fn public_releases_include_promoted_insider_builds_and_public_optional_updates() {
         let no_network: Refresh = || panic!("known releases need no network");
-        for version in ["10.0.26200.6584", "10.0.26200.7309", "10.0.26200.9278"] {
+        for version in ["10.0.19045.7846", "10.0.26200.6584", "10.0.26200.7309", "10.0.26200.9278"] {
             assert_eq!(classify_with(version, "ge_release", snapshot(), Some(no_network)), Status::Released);
         }
     }

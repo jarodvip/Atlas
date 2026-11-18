@@ -6,8 +6,8 @@
     every onUpgradeVersions entry in Configuration/custom.yml to the new version so the
     upgrade-only actions stay bound to the released version, sets the same version in
     app/Cargo.toml and the atlas-app entry in app/Cargo.lock, which the --locked app
-    builds need, and in the "Atlas v<Version> for Windows 11" options of the bug report
-    template.
+    builds need, and in the "Atlas v<Version> for Windows <name> <release>" options of
+    the bug report template.
 .DESCRIPTION
     When playbook.conf already has the version, it's left as it is and only the other
     files that disagree with it are brought in line.
@@ -140,10 +140,12 @@ if (-not [regex]::IsMatch($cargoLockText, $cargoLockPattern)) {
 $updatedCargoLock = [regex]::Replace($cargoLockText, $cargoLockPattern, "`${1}$Version`${2}")
 
 $templateText = [IO.File]::ReadAllText($BugReportTemplatePath)
-$templatePattern = '(?m)^([ \t]*- Atlas v)\d+\.\d+\.\d+( for Windows 11 )'
+# An option is "Atlas v<version> for Windows <name> <release>"; only the version is
+# rewritten, so adding or dropping a supported release is a separate, reviewed change.
+$templatePattern = '(?m)^([ \t]*- Atlas v)\d+\.\d+\.\d+( for Windows (?:10|11) )'
 $templateMatches = [regex]::Matches($templateText, $templatePattern)
 if ($templateMatches.Count -eq 0) {
-    throw "Could not find any 'Atlas v<version> for Windows 11' options in '$BugReportTemplatePath'."
+    throw "Could not find any 'Atlas v<version> for Windows' options in '$BugReportTemplatePath'."
 }
 $updatedTemplate = [regex]::Replace($templateText, $templatePattern, "`${1}$Version`${2}")
 

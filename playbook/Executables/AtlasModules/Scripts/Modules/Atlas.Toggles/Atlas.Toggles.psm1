@@ -38,6 +38,7 @@ foreach ($domainModule in @(
 
 Export-ModuleMember -Function @(
     'Get-AtlasToggleDefinition', 'Test-AtlasToggleDefinition', 'Get-AtlasToggleStateWork',
+    'Get-AtlasToggleBuildSkipReason', 'Test-AtlasToggleApplicable',
     'Invoke-AtlasToggle', 'Invoke-AtlasToggleMachineState',
     'Get-AtlasToggleState', 'Get-AtlasToggleStateRecords', 'Set-AtlasToggleState',
     'Invoke-AtlasToggleNativeCommand', 'Remove-AtlasToggleBcdValue',

@@ -1,15 +1,62 @@
 # Whether a Windows build is a public release. This says nothing about whether the
 # installation or media is genuine. Dot-sourcing only defines functions; the network
 # is used only when the bundled catalog cannot decide.
+#
+# Two official pages are read, because neither lists the other's releases:
+# - Windows 11 release information: 25H2 (26200) and 26H2 (26300).
+# - The consolidated Windows release information: 22H2 (19045) and older.
+# Microsoft keeps both under learn.microsoft.com/release-health, as Markdown.
+
+# Supported build families: OS build -> release name, and the page whose table lists
+# that release. Must stay in step with the app's BUILD_FAMILIES and the bundled
+# catalog's supportedReleases.
+function Get-AtlasWindowsReleaseFamily {
+    return @(
+        [pscustomobject]@{
+            Build    = 19045
+            Release  = '22H2'
+            Page     = 'https://learn.microsoft.com/en-us/windows/release-health/release-information'
+        }
+        [pscustomobject]@{
+            Build    = 26200
+            Release  = '25H2'
+            Page     = 'https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information'
+        }
+        [pscustomobject]@{
+            Build    = 26300
+            Release  = '26H2'
+            Page     = 'https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information'
+        }
+    )
+}
+
+function Get-AtlasWindowsReleaseFamilyForBuild {
+    param([Parameter(Mandatory = $true)][int]$Build)
+    return @(Get-AtlasWindowsReleaseFamily | Where-Object Build -eq $Build | Select-Object -First 1)
+}
+
 function ConvertFrom-AtlasWindowsReleaseMarkdown {
+    <#
+    .SYNOPSIS
+        Reads the General Availability rows of one supported release from its table.
+
+    .DESCRIPTION
+        The section heading is `Version <Release> (OS build <Build>)`. Windows 11 pages
+        group every 24H2-or-newer release, and the consolidated page groups 22H2 and
+        older. The table ends at the next `Version ...` heading, so a row never leaks
+        between sections, and only a completely published row (available on or before
+        `AsOfDate`) is returned.
+    #>
     [CmdletBinding()]
     param(
         [Parameter(Mandatory)][string]$Markdown,
         [datetime]$AsOfDate = [datetime]::UtcNow.Date,
-        [ValidateSet(26200,26300)][int]$Build = 26200
+        [ValidateSet(19045, 26200, 26300)][int]$Build = 26200
     )
+    $family = Get-AtlasWindowsReleaseFamilyForBuild -Build $Build
+    if ($null -eq $family) { throw "Build $Build is not a supported Windows release family." }
+    $releaseName = [string]$family.Release
     $Markdown = $Markdown.Replace("`r`n", "`n")
-    $releaseName = if ($Build -eq 26200) { '25H2' } else { '26H2' }
     $headingText = [regex]::Escape("Version $releaseName (OS build $Build)")
     $heading = [regex]::Match($Markdown, "(?m)^\s*(?:\*\*|#{1,6}\s*)?$headingText(?:\*\*)?\s*$")
     if (-not $heading.Success) { throw "The official $releaseName release section is missing." }
@@ -55,9 +102,21 @@ function New-AtlasWindowsReleaseRequest {
 }
 
 function Get-AtlasWindowsReleaseMarkdown {
+    <#
+    .SYNOPSIS
+        Reads the Markdown form of one official release page.
+
+    .DESCRIPTION
+        Stable builds pass -Page for each page they must consult. The Windows 11 page
+        carries 25H2 and 26H2; the consolidated page carries 22H2 and older, so both
+        are read when every supported release must be refreshed. Only learn.microsoft.com
+        over HTTPS is accepted, redirects stay on that origin, and the body is limited.
+    #>
     [CmdletBinding()]
-    param()
-    $uri = [uri]'https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information'
+    param(
+        [uri]$Page = [uri]'https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information'
+    )
+    $uri = $Page
     $clock = [Diagnostics.Stopwatch]::StartNew()
     $timeoutMs = 15000
     $limit = 1MB
@@ -114,10 +173,11 @@ function Get-AtlasWindowsReleaseStatus {
         [switch]$NoRefresh
     )
     if ($BuildLabEx -match '(?i)(?:^|[._-])prerelease(?:[._-]|$)') { return 'Preview' }
-    if ($Version.Major -ne 10 -or $Version.Minor -ne 0 -or $Version.Build -notin @(26200,26300) -or $Version.Revision -lt 1) { return 'Unknown' }
+    $family = Get-AtlasWindowsReleaseFamilyForBuild -Build $Version.Build
+    if ($Version.Major -ne 10 -or $Version.Minor -ne 0 -or $null -eq $family -or $Version.Revision -lt 1) { return 'Unknown' }
     try {
         $catalog = Get-Content -LiteralPath (Join-Path $PSScriptRoot 'windows-releases.json') -Raw -ErrorAction Stop | ConvertFrom-Json -ErrorAction Stop
-        if ($catalog.schemaVersion -eq 2 -and @($catalog.supportedReleases.build) -contains $Version.Build) {
+        if ($catalog.schemaVersion -eq 3 -and @($catalog.supportedReleases.build) -contains $Version.Build) {
             foreach ($release in $catalog.releases) {
                 if ($release.version -eq $Version.ToString() -and [datetime]::ParseExact($release.availableDate, 'yyyy-MM-dd', [Globalization.CultureInfo]::InvariantCulture).Date -le [datetime]::UtcNow.Date) {
                     return 'Released'
@@ -136,9 +196,24 @@ function Get-AtlasWindowsReleaseStatus {
     try {
         $cached = Get-Variable -Name AtlasWindowsReleasedVersions -Scope Script -ErrorAction SilentlyContinue
         if ($null -eq $cached) {
-            $markdown = Get-AtlasWindowsReleaseMarkdown
-            $releases = @(foreach ($build in 26200,26300) { ConvertFrom-AtlasWindowsReleaseMarkdown -Markdown $markdown -Build $build })
-            $script:AtlasWindowsReleasedVersions = @($releases | ForEach-Object { $_.version })
+            # One read per official page: the Windows 11 page for 25H2/26H2 and the
+            # consolidated page for 22H2. A page that fails to load contributes no
+            # versions for its builds rather than failing the other page's lookup.
+            $versions = New-Object 'Collections.Generic.List[string]'
+            $pages = @(Get-AtlasWindowsReleaseFamily | Select-Object -ExpandProperty Page -Unique)
+            foreach ($page in $pages) {
+                try {
+                    $markdown = Get-AtlasWindowsReleaseMarkdown -Page ([uri]$page)
+                    foreach ($buildFamily in @(Get-AtlasWindowsReleaseFamily | Where-Object Page -eq $page)) {
+                        foreach ($release in @(ConvertFrom-AtlasWindowsReleaseMarkdown -Markdown $markdown -Build $buildFamily.Build)) {
+                            $versions.Add([string]$release.version)
+                        }
+                    }
+                }
+                catch { Write-Verbose "Windows release information is unavailable for '$page': $_" }
+            }
+            if ($versions.Count -eq 0) { return 'Unknown' }
+            $script:AtlasWindowsReleasedVersions = @($versions)
         }
         if ($script:AtlasWindowsReleasedVersions -contains $Version.ToString()) { return 'Released' }
         # Read, but left out: most often a Release Preview build, or an update the

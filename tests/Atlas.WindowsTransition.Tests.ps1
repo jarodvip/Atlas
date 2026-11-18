@@ -700,6 +700,12 @@ Describe 'The feature-update target' {
         @($script:Writes | Where-Object { $_ -match 'DisableWUfBSafeguards' }) | Should -BeNullOrEmpty
     }
 
+    It 'pins a Windows 10 release with the Windows 10 product name' {
+        Set-AtlasFeatureUpdateTarget -Release '22H2' -ProductVersion 'Windows 10'
+        (Get-Fake $script:Policy ProductVersion).Data | Should -BeExactly 'Windows 10'
+        (Get-Fake $script:Policy TargetReleaseVersionInfo).Data | Should -BeExactly '22H2'
+    }
+
     It 'creates the policy key only when something deleted it' {
         foreach ($key in @($script:Registry.Keys | Where-Object { $_ -like "$script:Policy|*" -or $_ -like "$script:Policy\*" })) { $script:Registry.Remove($key) }
         Set-AtlasFeatureUpdateTarget -Release '26H2'

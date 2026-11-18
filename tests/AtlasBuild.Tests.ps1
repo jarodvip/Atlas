@@ -762,8 +762,8 @@ Describe 'Package version coherence' {
 
         function Get-BugReportOption {
             param([Parameter(Mandatory = $true)][string]$Path)
-            @([regex]::Matches([IO.File]::ReadAllText($Path), '(?m)^\s*- (Atlas v\S+ for Windows 11 \S+?)\s*$') |
-                    ForEach-Object { $_.Groups[1].Value })
+            @([regex]::Matches([IO.File]::ReadAllText($Path), '(?m)^\s*- (Atlas v\S+ for Windows (?:10|11) \S+\s?\S*?)\s*$') |
+                    ForEach-Object { $_.Groups[1].Value.Trim() })
         }
 
         # Laid out like the repository, so the script finds the app files and the bug report
@@ -787,7 +787,7 @@ Describe 'Package version coherence' {
                 "[package]`nname = `"atlas-app`"`nversion = `"$AppVersion`"`n")
             [IO.File]::WriteAllText((Join-Path $fixture 'app\Cargo.lock'), (New-CargoLockFixture -AppVersion $AppVersion))
             [IO.File]::WriteAllText((Join-Path $templates 'bug_report.yml'),
-                "    options:`n    - Atlas v0.6.0 for Windows 11 25H2`n    - Atlas v0.6.0 for Windows 11 26H2`n")
+                "    options:`n    - Atlas v0.6.0 for Windows 10 22H2`n    - Atlas v0.6.0 for Windows 11 25H2`n    - Atlas v0.6.0 for Windows 11 26H2`n")
             $conf
         }
     }
@@ -819,8 +819,12 @@ Describe 'Package version coherence' {
         $options = Get-BugReportOption -Path (Join-Path $script:repoRoot '.github\ISSUE_TEMPLATE\bug_report.yml')
 
         $releases.Count | Should -BeGreaterThan 0
+        # 22H2 (19045) is Windows 10; the rest are Windows 11. The catalog lists them
+        # in this order, so the options must match it.
+        $product = @{ '22H2' = 'Windows 10' }
         ($options -join '|') | Should -BeExactly (@($releases | ForEach-Object {
-                    "Atlas v$confVersion for Windows 11 $_" }) -join '|') `
+                    $win = if ($product.ContainsKey($_)) { $product[$_] } else { 'Windows 11' }
+                    "Atlas v$confVersion for $win $_" }) -join '|') `
             -Because 'the bug report must offer exactly the Windows releases this Atlas version supports'
     }
 
@@ -888,7 +892,7 @@ Describe 'Package version coherence' {
         Get-CargoPackageVersion -Path (Join-Path $fixture 'app\Cargo.toml') | Should -BeExactly $Version
         Get-CargoLockVersion -Path (Join-Path $fixture 'app\Cargo.lock') -Name 'atlas-app' | Should -BeExactly $Version
         @(Get-BugReportOption -Path (Join-Path $fixture '.github\ISSUE_TEMPLATE\bug_report.yml')) -join '|' |
-            Should -BeExactly "Atlas v$Version for Windows 11 25H2|Atlas v$Version for Windows 11 26H2"
+            Should -BeExactly "Atlas v$Version for Windows 10 22H2|Atlas v$Version for Windows 11 25H2|Atlas v$Version for Windows 11 26H2"
     }
 
     It 'brings drifted app files in line when playbook.conf already has the version' {
@@ -918,7 +922,7 @@ Describe 'Package version coherence' {
     It 'changes nothing when <Case>' -ForEach @(
         @{ Case = 'the version lacks a number'; Version = '0.7'; LockText = $null; TemplateText = $null; Message = "*parameter 'Version'*" }
         @{ Case = 'Cargo.lock has no atlas-app entry'; Version = '0.7.0'; LockText = "version = 4`n"; TemplateText = $null; Message = '*atlas-app entry*' }
-        @{ Case = 'the bug report template has no Atlas version option'; Version = '0.7.0'; LockText = $null; TemplateText = "    options:`n    - Other`n"; Message = "*'Atlas v<version> for Windows 11' options*" }
+        @{ Case = 'the bug report template has no Atlas version option'; Version = '0.7.0'; LockText = $null; TemplateText = "    options:`n    - Other`n"; Message = "*'Atlas v<version> for Windows' options*" }
     ) {
         $conf = New-VersionFixture -Name ($Case -replace '\W', '-') -UpgradableFrom '<UpgradableFrom>0.5.0</UpgradableFrom>'
         $fixture = Split-Path (Split-Path $conf -Parent) -Parent

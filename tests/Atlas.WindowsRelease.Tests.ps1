@@ -23,10 +23,36 @@ updated_at: 2026-08-28T08:57:00.0000000Z
 | General Availability Channel | 2025-09 D | $Date | $Version | [KB5120998](https://support.microsoft.com/help/5120998) |
 | Release Preview Channel | 2025-09 D | 2025-09-30 | 26200.5551 | |
 
+**Version 22H2 (OS build 19045)**
+| Servicing option | Update type | Availability date | Build | KB article |
+| --- | --- | --- | --- | --- |
+| General Availability Channel | 2026-11 D | 2026-11-10 | 19045.7846 | [KB5126657](https://support.microsoft.com/help/5126657) |
+
 **Version 26H1 (OS build 28000)**
 | Servicing option | Update type | Availability date | Build | KB article |
 | --- | --- | --- | --- | --- |
 | General Availability Channel | 2025-09 D | 2025-09-30 | 26200.8888 | |
+"@
+    }
+    # The consolidated page carries Windows 10 (and older); the Windows 11 page carries
+    # 24H2 and newer. Neither lists the other, so the lookup reads one Markdown per page.
+    function New-ConsolidatedMarkdownFixture {
+        param([string]$Version = '19045.7846', [string]$Date = '2026-11-10')
+        @"
+---
+git_commit_id: 9876543210987654321098765432109876543210
+updated_at: 2026-11-14T05:21:00.0000000Z
+---
+**Version 22H2 (OS build 19045)**
+| Servicing option | Update type | Availability date | Build | KB article |
+| --- | --- | --- | --- | --- |
+| General Availability Channel | 2026-11 D | $Date | $Version | [KB5126657](https://support.microsoft.com/help/5126657) |
+| Release Preview Channel | 2026-11 D | 2026-11-10 | 19045.9990 | |
+
+**Version 21H2 (OS build 19044)**
+| Servicing option | Update type | Availability date | Build | KB article |
+| --- | --- | --- | --- | --- |
+| General Availability Channel | 2023-07 D | 2023-07-10 | 19044.3296 | |
 "@
     }
     function New-ReleaseResponseFixture {
@@ -89,14 +115,19 @@ Describe 'Windows release catalog parser' {
 Describe 'Windows release eligibility' {
     BeforeAll {
         # A copy of the policy beside a fixed catalog, so a routine refresh of the bundled
-        # one can't change these results. Listed: 26200.100, .200 and .300; 26300.100 and .200.
+        # one can't change these results. Listed: 26200.100, .200 and .300; 26300.100 and
+        # .200; 19045.100.
         $fixtureRoot = Join-Path $TestDrive 'Compatibility'
         $null = New-Item -ItemType Directory -Path $fixtureRoot
         Copy-Item -LiteralPath $policy -Destination $fixtureRoot
         $catalog = [ordered]@{
-            schemaVersion = 2
-            supportedReleases = @([ordered]@{ release = '25H2'; build = 26200 }, [ordered]@{ release = '26H2'; build = 26300 })
-            releases = @(foreach ($build in '26200.100', '26200.200', '26200.300', '26300.100', '26300.200') {
+            schemaVersion = 3
+            supportedReleases = @(
+                [ordered]@{ release = '22H2'; build = 19045 },
+                [ordered]@{ release = '25H2'; build = 26200 },
+                [ordered]@{ release = '26H2'; build = 26300 }
+            )
+            releases = @(foreach ($build in '19045.100', '26200.100', '26200.200', '26200.300', '26300.100', '26300.200') {
                 [ordered]@{ version = "10.0.$build"; availableDate = '2025-10-14' }
             })
         }
@@ -110,6 +141,7 @@ Describe 'Windows release eligibility' {
     It 'recognizes a listed full version offline' {
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.100' | Should -Be 'Released'
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.300' | Should -Be 'Released'
+        Get-AtlasWindowsReleaseStatus -Version '10.0.19045.100' | Should -Be 'Released'
         Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 0 -Exactly
     }
     It 'recognizes the listed 26H2 versions offline and still rejects prerelease branches' {
@@ -118,7 +150,7 @@ Describe 'Windows release eligibility' {
             Get-AtlasWindowsReleaseStatus -Version $version -BuildLabEx '26300.1.amd64fre.rs_prerelease' | Should -Be 'Preview'
         }
         Get-AtlasWindowsReleaseStatus -Version '10.0.26300.9999' | Should -Be 'Unknown'
-        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 1 -Exactly
+        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 2 -Exactly
     }
     It 'rejects an explicit prerelease branch marker without a network lookup' {
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.5551' -BuildLabEx '26200.1.amd64fre.rs_prerelease_flt.250101-0000' | Should -Be 'Preview'
@@ -129,7 +161,7 @@ Describe 'Windows release eligibility' {
     }
     It 'does not classify an unrecognized full version as Insider after a lookup failure' {
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.9999' -BuildLabEx '26100.1.amd64fre.ge_release.240331-1435' | Should -Be 'Unknown'
-        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 1 -Exactly
+        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 2 -Exactly
     }
     It 'does not query unrelated or incomplete build versions' {
         Get-AtlasWindowsReleaseStatus -Version '10.0.26100.9168' | Should -Be 'Unknown'
@@ -141,7 +173,7 @@ Describe 'Windows release eligibility' {
         Mock Get-AtlasWindowsReleaseMarkdown { New-ReleaseMarkdownFixture }
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.9999' | Should -Be 'Released'
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.9999' | Should -Be 'Released'
-        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 1 -Exactly
+        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 2 -Exactly
     }
     It 'tells a build the published list leaves out from a failed lookup' {
         Mock Get-AtlasWindowsReleaseMarkdown { New-ReleaseMarkdownFixture }
@@ -149,12 +181,12 @@ Describe 'Windows release eligibility' {
         Get-AtlasWindowsReleaseStatus -Version '10.0.26300.9990' | Should -Be 'Unlisted'
         Get-AtlasWindowsReleaseStatus -Version '10.0.26300.300' | Should -Be 'Unlisted'
         Get-AtlasWindowsReleaseStatus -Version '10.0.26300.300' -NoRefresh | Should -Be 'Released'
-        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 1 -Exactly
+        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 2 -Exactly
     }
     It 'does not permanently cache a failed lookup' {
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.9999' | Should -Be 'Unknown'
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.9999' | Should -Be 'Unknown'
-        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 2 -Exactly
+        Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 4 -Exactly
     }
     It 'decides from the bundled catalog alone without a live lookup' {
         # Newer than every listed revision of its build: an update the catalog predates.
@@ -163,6 +195,9 @@ Describe 'Windows release eligibility' {
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.200' -NoRefresh | Should -Be 'Released'
         # Unlisted and older than the newest listed revision, as a pre-release flight is.
         Get-AtlasWindowsReleaseStatus -Version '10.0.26200.299' -NoRefresh | Should -Be 'Unknown'
+        Get-AtlasWindowsReleaseStatus -Version '10.0.19045.100' -NoRefresh | Should -Be 'Released'
+        Get-AtlasWindowsReleaseStatus -Version '10.0.19045.200' -NoRefresh | Should -Be 'Released'
+        Get-AtlasWindowsReleaseStatus -Version '10.0.19045.99' -NoRefresh | Should -Be 'Unknown'
         Get-AtlasWindowsReleaseStatus -Version '10.0.26100.9999' -NoRefresh | Should -Be 'Unknown'
         Get-AtlasWindowsReleaseStatus -Version '10.0.26300.201' -BuildLabEx '26300.1.amd64fre.rs_prerelease' -NoRefresh | Should -Be 'Preview'
         Should -Invoke Get-AtlasWindowsReleaseMarkdown -Times 0 -Exactly
@@ -195,6 +230,14 @@ Describe 'Limits on the official release transport' {
         $requestFixture.Aborted | Should -BeTrue
         $requestFixture.Response.Disposed | Should -BeTrue
     }
+    It 'reads the requested page, defaulting to the Windows 11 page' {
+        $script:requestedUri = $null
+        Mock New-AtlasWindowsReleaseRequest { $script:requestedUri = $Uri; $script:requestFixture }
+        Get-AtlasWindowsReleaseMarkdown | Out-Null
+        $script:requestedUri.AbsoluteUri | Should -Be 'https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information'
+        Get-AtlasWindowsReleaseMarkdown -Page ([uri]'https://learn.microsoft.com/en-us/windows/release-health/release-information') | Out-Null
+        $script:requestedUri.AbsoluteUri | Should -Be 'https://learn.microsoft.com/en-us/windows/release-health/release-information'
+    }
     It 'does not follow a redirect to <Location>' -TestCases @(
         @{ Location = 'https://example.invalid/releases' }
         @{ Location = 'http://learn.microsoft.com/releases' }
@@ -223,7 +266,9 @@ Describe 'Reviewed release catalog regeneration' {
     BeforeAll {
         $script:generator = Join-Path $PSScriptRoot '../tools/dev/Update-WindowsReleaseCatalog.ps1'
         $script:markdownPath = Join-Path $TestDrive 'release-source.md'
+        $script:consolidatedPath = Join-Path $TestDrive 'consolidated-source.md'
         [IO.File]::WriteAllText($markdownPath, (New-ReleaseMarkdownFixture), [Text.UTF8Encoding]::new($false))
+        [IO.File]::WriteAllText($consolidatedPath, (New-ConsolidatedMarkdownFixture), [Text.UTF8Encoding]::new($false))
     }
     It 'reproduces identical catalog bytes from the same saved source and cutoff' {
         $first = Join-Path $TestDrive 'first.json'
@@ -231,7 +276,7 @@ Describe 'Reviewed release catalog regeneration' {
         # Separate PowerShell 7 processes, as maintainers run it: each orders an unordered
         # hashtable differently.
         foreach ($path in $first, $second) {
-            $output = & $script:AtlasTestToolsHost -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $generator -MarkdownPath $markdownPath -AsOfDate '2026-09-07' -Build 26200 -OutputPath $path 2>&1
+            $output = & $script:AtlasTestToolsHost -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $generator -MarkdownPath $markdownPath -ConsolidatedMarkdownPath $consolidatedPath -AsOfDate '2026-09-07' -OutputPath $path 2>&1
             $LASTEXITCODE | Should -Be 0 -Because ($output -join "`n")
         }
         (Get-FileHash $first).Hash | Should -Be (Get-FileHash $second).Hash
@@ -239,21 +284,36 @@ Describe 'Reviewed release catalog regeneration' {
         $text.Contains("`r") | Should -BeFalse
         $text | Should -Match '[^\n]\n\z'
         $catalog = $text | ConvertFrom-Json
-        $catalog.supportedReleases.build | Should -Be 26200
-        $catalog.releases.version | Should -Be '10.0.26200.9999'
+        $catalog.schemaVersion | Should -Be 3
+        $catalog.supportedReleases.build | Should -Be @(19045,26200,26300)
+        # At 2026-09-07 the 22H2 row (available 2026-11-10) is a future release and is excluded.
+        $catalog.releases.version | Should -Be @('10.0.26200.9999')
         $catalog.asOfDate | Should -Be '2026-09-07'
     }
-    It 'generates both supported release families with the same provenance' {
+    It 'generates every supported release family with a source per page' {
         $catalogPath = Join-Path $TestDrive 'both.json'
-        $output = & $script:AtlasTestToolsHost -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $generator -MarkdownPath $markdownPath -AsOfDate '2026-09-30' -OutputPath $catalogPath 2>&1
+        $output = & $script:AtlasTestToolsHost -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $generator -MarkdownPath $markdownPath -ConsolidatedMarkdownPath $consolidatedPath -AsOfDate '2026-09-30' -OutputPath $catalogPath 2>&1
         $LASTEXITCODE | Should -Be 0 -Because ($output -join "`n")
         $catalog = Get-Content $catalogPath -Raw | ConvertFrom-Json
-        $catalog.schemaVersion | Should -Be 2
-        $catalog.supportedReleases.build | Should -Be @(26200,26300)
+        $catalog.schemaVersion | Should -Be 3
+        $catalog.supportedReleases.build | Should -Be @(19045,26200,26300)
+        # The 22H2 row (2026-11-10) is still in the future on 2026-09-30 and is excluded.
         $catalog.releases.version | Should -Be @('10.0.26200.9999','10.0.26300.9457','10.0.26300.9550')
-        $catalog.sourceCommit | Should -Be '0123456789012345678901234567890123456789'
-        $catalog.sourceSha256 | Should -Be (Get-FileHash $markdownPath -Algorithm SHA256).Hash
-        $catalog.updatedAt | Should -Be '2026-08-28T08:57:00.0000000Z'
+        $catalog.sources.url | Should -Be @(
+            'https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information',
+            'https://learn.microsoft.com/en-us/windows/release-health/release-information'
+        )
+        ($catalog.sources | Where-Object { $_.url -like '*windows11-release-information' }).sha256 |
+            Should -Be (Get-FileHash $markdownPath -Algorithm SHA256).Hash
+        ($catalog.sources | Where-Object { $_.url -like '*release-information' }).sha256 |
+            Should -Be (Get-FileHash $consolidatedPath -Algorithm SHA256).Hash
         $catalog.asOfDate | Should -Be '2026-09-30'
+    }
+    It 'includes the Windows 10 22H2 family once its release is published' {
+        $catalogPath = Join-Path $TestDrive 'win10.json'
+        $output = & $script:AtlasTestToolsHost -NoProfile -NonInteractive -ExecutionPolicy Bypass -File $generator -MarkdownPath $markdownPath -ConsolidatedMarkdownPath $consolidatedPath -AsOfDate '2026-11-30' -OutputPath $catalogPath 2>&1
+        $LASTEXITCODE | Should -Be 0 -Because ($output -join "`n")
+        $catalog = Get-Content $catalogPath -Raw | ConvertFrom-Json
+        $catalog.releases.version | Should -Contain '10.0.19045.7846'
     }
 }

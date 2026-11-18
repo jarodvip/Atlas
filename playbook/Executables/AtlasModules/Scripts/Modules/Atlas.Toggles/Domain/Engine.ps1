@@ -633,6 +633,17 @@ function Invoke-AtlasToggleInProcess {
         throw "Toggle '$($Definition['Name'])' does not define state '$StateName'."
     }
     $stateEntry = $Definition['States'][$StateName]
+    # The single chokepoint for every path that runs toggle work: launcher, install
+    # plan, tweak Toggle entry, ResetServices and replay all reach Invoke-AtlasToggle
+    # or Invoke-AtlasToggleMachineState, which funnel here. A definition naming a
+    # Windows build range does nothing outside it, so a Windows 11-only policy is
+    # never applied (or recorded) on Windows 10, whatever called it.
+    $buildSkipReason = Get-AtlasToggleBuildSkipReason -Definition $Definition `
+        -WindowsBuild ([int](Get-AtlasContext).WindowsBuild)
+    if ($buildSkipReason) {
+        Write-AtlasLog -Message "Toggle '$($Definition['Name'])' $buildSkipReason on this PC, so state '$StateName' was not applied."
+        return
+    }
     $work = Get-AtlasToggleStateWork -Definition $Definition -StateEntry $stateEntry
     if ($Scope -ceq 'Local' -and -not $work.Local) {
         throw "Toggle '$($Definition['Name'])' is elevated; its state '$StateName' has no local scope."
@@ -722,6 +733,16 @@ function Invoke-AtlasToggleMachineState {
     $definition = Get-AtlasToggleDefinition -Name $Name -TogglesRoot $TogglesRoot
     if (-not $definition['States'].Contains($State)) {
         throw "Toggle '$Name' does not define exact state '$State'."
+    }
+    # A toggle whose definition names a Windows build range does not apply outside it.
+    # The install plan and tweaks reach toggles through this function, not
+    # Invoke-AtlasToggle, so the gate has to hold here too or a Windows 11-only policy
+    # would be applied (and recorded) during a fresh install on Windows 10.
+    $buildSkipReason = Get-AtlasToggleBuildSkipReason -Definition $definition `
+        -WindowsBuild ([int](Get-AtlasContext).WindowsBuild)
+    if ($buildSkipReason) {
+        Write-AtlasLog -Message "Toggle '$Name' $buildSkipReason on this PC, so state '$State' was not applied."
+        return
     }
     Assert-AtlasToggleMachinePrivilege -Definition $definition
 
@@ -906,6 +927,24 @@ function Invoke-AtlasToggle {
     $elevation = Get-AtlasToggleElevation -Definition $definition
     $work = Get-AtlasToggleStateWork -Definition $definition -StateEntry $stateEntry
     $title = Get-AtlasToggleDisplayName -Definition $definition -StateEntry $stateEntry -LauncherPath $LauncherPath -PreferMenuLabel
+
+    # A toggle whose definition names a Windows build range does not apply outside it
+    # (for example a Windows 11-only policy on Windows 10). Refuse cleanly before any
+    # work, recording or elevation, so a launcher run on an unsupported build does
+    # nothing rather than writing values Windows does not honor.
+    $buildSkipReason = Get-AtlasToggleBuildSkipReason -Definition $definition `
+        -WindowsBuild ([int](Get-AtlasContext).WindowsBuild)
+    if ($buildSkipReason) {
+        $message = "Toggle '$($definition['Name'])' $buildSkipReason on this PC, so state '$stateName' was not applied."
+        if (-not $Silent) {
+            Write-AtlasNotApplied -Title $title -Reason $message
+            Wait-AtlasExit
+        }
+        else {
+            Write-AtlasLog -Message $message
+        }
+        return
+    }
 
     if ($DeferPostAction -and (-not $work.User -or $work.Machine -or $work.ProtectedUserRegistry -or
         $JustContext -or $MachineOnly -or

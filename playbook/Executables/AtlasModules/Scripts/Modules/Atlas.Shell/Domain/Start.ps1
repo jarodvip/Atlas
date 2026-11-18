@@ -67,8 +67,16 @@ function Set-AtlasStartLayout {
     .DESCRIPTION
         Runs in the privileged install phase with the default-user hive loaded. The
         layout must apply once and contain at least one pin. A build older than the
-        Configure Start Pins GPO is reported as a warning, not a failure.
+        Configure Start Pins GPO is reported as a warning, not a failure. Windows 10
+        (build 19045) has neither the Configure Start Pins policy nor this layout's
+        Windows 11 pins, so the layout is left unapplied there.
     #>
+    $version = Get-AtlasStartWindowsVersion
+    if ($version.Build -gt 0 -and $version.Build -lt 22000) {
+        Write-AtlasLog -Message "Skipping the Windows 11 Start pin layout on OS build $($version.Build): Windows 10 has no Configure Start Pins policy."
+        return
+    }
+
     $layoutJson = Get-AtlasStartLayoutPath
     if (-not (Test-Path -LiteralPath $layoutJson -PathType Leaf)) {
         throw "The Windows 11 Start layout is missing at '$layoutJson'."
@@ -85,7 +93,6 @@ function Set-AtlasStartLayout {
         throw 'The Windows 11 Start layout must apply once and contain at least one pin.'
     }
 
-    $version = Get-AtlasStartWindowsVersion
     if (Test-AtlasStartPinPolicySupported -Build $version.Build -Revision $version.Revision) {
         Write-AtlasLog -Message "Configure Start Pins policy support detected on OS build $($version.Build).$($version.Revision)."
     }

@@ -1311,7 +1311,7 @@ install-windows-edition = Atlas { $version } works with Windows 11 Pro, Enterpri
 # The same, on a version whose security updates end. $date is a date.
 install-windows-edition-ending = Atlas { $version } works with Windows 11 Pro, Enterprise and Education. This PC has { $product }, so Atlas can't install on it. Windows 11, version { $current } stops getting security updates on { $date }. Windows Update can move this PC to a newer version.
 # $releases lists the supported releases, such as "25H2 or 26H2".
-install-windows-no-path = Atlas { $version } needs Windows 11, version { $releases }, and Windows Update can't move this PC there from the Windows it has. To use Atlas { $version }, back up your files and reinstall Windows with an Atlas ISO.
+install-windows-no-path = Atlas { $version } needs a Windows version Atlas supports ({ $releases }), and Windows Update can't move this PC there from the Windows it has. To use Atlas { $version }, back up your files and reinstall Windows from Atlas-supported media.
 
 # Home, when Atlas changed Windows Update settings for an update and hasn't put them back.
 home-update-access-title = Windows Update settings are changed for the Atlas update

@@ -55,6 +55,8 @@ existing recorded choices. Direct callers using old state identifiers must updat
     ToolboxLauncher = 'Scripts\X\toggleX.cmd'                            # only for a path a Toolbox release before 0.2.0 opens (docs/compatibility.md)
     SilentDefault   = 'Enable'               # Menu toggles: state used silently with no record
     NoStateRecord   = $true                  # optional: never record this toggle
+    MinBuild        = 22000                  # optional: only apply on build >= this (Windows 10 22H2 is 19045)
+    MaxBuild        = 21999                  # optional: only apply on build <= this (Windows 10-only)
     Script          = 'Bluetooth.ps1'        # companion; required when a state names a function
     States          = @(                     # ordered; menu numbering follows this order
         @{

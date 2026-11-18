@@ -1,6 +1,6 @@
 # Upgrading Atlas
 
-The Atlas 0.6 package accepts installed versions 0.4.1 and 0.5.0 (the 0.5.0-hotfix release records itself as 0.5.0). The source-version list is an eligibility check, not evidence that every version and Windows build combination has been tested. The current package accepts Windows 11 25H2 (build 26200) and 26H2 (build 26300); the upgrade on 26H2 has been checked only in VMs so far (see [the Windows release policy](windows-release-policy.md) and [Windows version transition](#windows-version-transition)). Source Atlas version and Windows build are separate requirements: on 24H2, Atlas Manager moves Windows to 26H2 before the Atlas upgrade (see [Windows version transition](#windows-version-transition)).
+The Atlas 0.6 package accepts installed versions 0.4.1 and 0.5.0 (the 0.5.0-hotfix release records itself as 0.5.0). The source-version list is an eligibility check, not evidence that every version and Windows build combination has been tested. The current package accepts Windows 11 25H2 (build 26200) and 26H2 (build 26300), and Windows 10 22H2 (build 19045); the upgrades on 26H2 and on Windows 10 22H2 have been checked only in VMs so far (see [the Windows release policy](windows-release-policy.md) and [Windows version transition](#windows-version-transition)). Source Atlas version and Windows build are separate requirements: on Windows 11 24H2, Atlas Manager moves Windows to 26H2 before the Atlas upgrade (see [Windows version transition](#windows-version-transition)). Windows 10 22H2 is the last Windows 10 release, so there is no in-place move for it; Atlas installs on it after a fresh 22H2 installation.
 
 ## What an upgrade applies
 
@@ -244,6 +244,11 @@ apps, services, policies and recorded choices stay. If Windows rebuilds itself i
 Atlas install puts Atlas back (see [Rebase](#rebase)). The move needs a supported edition
 (not Home, LTSC or Server) and nothing else that would stop the Atlas install; Atlas
 Manager's Home page says so for other editions and for versions with no path, such as 23H2.
+
+Windows 10 22H2 (build 19045) has no transition: Microsoft made no later Windows 10
+release, so 22H2 is the installed release Atlas targets. Get ready runs no move for it,
+and the feature-update pin carries `ProductVersion`=`Windows 10` so Windows Update never
+offers a Windows 11 feature update over it.
 
 How the move works:
 

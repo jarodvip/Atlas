@@ -127,6 +127,26 @@ Describe 'Feature update target pinning' {
         @($script:ValueWrites).Count | Should -Be 0
     }
 
+    It 'pins a Windows 10 22H2 release with the Windows 10 product name' {
+        $script:OsCaption = 'Microsoft Windows 10 Pro'
+        $script:DisplayVersion = '22H2'
+
+        Invoke-FeatureUpdateTarget
+
+        $product = @($script:ValueWrites | Where-Object { $_.Name -ceq 'ProductVersion' })
+        $product.Count | Should -Be 1
+        $product[0].Value | Should -BeExactly 'Windows 10'
+        $release = @($script:ValueWrites | Where-Object { $_.Name -ceq 'TargetReleaseVersionInfo' })
+        $release[0].Value | Should -BeExactly '22H2'
+    }
+
+    It 'refuses to pin on an OS that is neither Windows 10 nor Windows 11' {
+        $script:OsCaption = 'Microsoft Windows Server 2025 Standard'
+
+        { Invoke-FeatureUpdateTarget } | Should -Throw '*not Windows 10 or Windows 11*'
+        @($script:ValueWrites).Count | Should -Be 0
+    }
+
     It 'reports a failed policy registry write instead of continuing' {
         # A non-terminating error, so only the script's own Stop preference ends the run.
         $script:RegistryWriteError = 'registry write denied'

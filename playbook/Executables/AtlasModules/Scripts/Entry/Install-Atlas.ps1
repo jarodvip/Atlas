@@ -332,11 +332,15 @@ function Test-AtlasInstallRequirement {
         Detail = "edition '$EditionId', installation '$InstallationType'; Windows Home, LTSC, IoT LTSC and Server are not supported"
     }
     $buildPassed = $SupportedBuilds -contains $WindowsBuild
+    # Builds Atlas Manager can move Windows here to a supported release. Only builds on
+    # the same product can be reached in place: a Windows 11 source can move to 25H2 or
+    # 26H2, and Windows 10 22H2 is the final Windows 10 release with no move to offer.
+    $inPlaceSourceBuilds = @(26100, 26200)
     $results += [pscustomobject]@{
         Name     = 'Windows build'
         Passed   = $buildPassed
         Blocking = $true
-        Detail   = "build $WindowsBuild; supported: $($SupportedBuilds -join ', ')$(if (-not $buildPassed -and $WindowsBuild -in @(26100, 26200)) { '. Atlas Manager can move Windows 11, version 24H2 or 25H2 to a supported version first' })"
+        Detail   = "build $WindowsBuild; supported: $($SupportedBuilds -join ', ')$(if (-not $buildPassed -and $WindowsBuild -in $inPlaceSourceBuilds) { '. Atlas Manager can move Windows 11, version 24H2 or 25H2 to a supported version first' })"
     }
     $release = Get-AtlasWindowsReleaseStatus -Version ([version]("10.0.$WindowsBuild.$WindowsRevision")) -BuildLabEx $BuildLabEx
     $results += [pscustomobject]@{

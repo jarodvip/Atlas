@@ -20,7 +20,7 @@
 
 $script:AtlasToggleTopLevelKeys = @(
     'Name', 'Description', 'Elevation', 'Warning', 'Menu', 'Launcher', 'ToolboxLauncher',
-    'SilentDefault', 'NoStateRecord', 'Script', 'States'
+    'SilentDefault', 'NoStateRecord', 'Script', 'States', 'MinBuild', 'MaxBuild'
 )
 $script:AtlasToggleStateKeys = @(
     'Name', 'StateValue', 'Launcher', 'ToolboxLauncher', 'MenuLabel', 'Reboot',
@@ -294,6 +294,49 @@ function Test-AtlasToggleRecordsState {
     return $true
 }
 
+function Get-AtlasToggleBuildSkipReason {
+    <#
+    .SYNOPSIS
+        Returns why a toggle does not apply on the given Windows build, or $null when
+        it does. The top-level MinBuild/MaxBuild gate mirrors the install tweak schema.
+
+    .DESCRIPTION
+        A build of 0 means the number could not be read; the gate is then not enforced
+        rather than hiding every gated toggle, exactly as the tweak applicability does
+        (Atlas.Tweaks\Domain\Applicability.ps1).
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [System.Collections.IDictionary]$Definition,
+
+        [int]$WindowsBuild = 0
+    )
+
+    if ($WindowsBuild -le 0) { return $null }
+    if ($Definition.Contains('MinBuild') -and $Definition['MinBuild'] -and $WindowsBuild -lt [int]$Definition['MinBuild']) {
+        return "requires Windows build $($Definition['MinBuild']) or newer"
+    }
+    if ($Definition.Contains('MaxBuild') -and $Definition['MaxBuild'] -and $WindowsBuild -gt [int]$Definition['MaxBuild']) {
+        return "requires Windows build $($Definition['MaxBuild']) or older"
+    }
+    return $null
+}
+
+function Test-AtlasToggleApplicable {
+    <#
+    .SYNOPSIS
+        Reports whether a toggle applies to the machine's Windows build.
+    #>
+    param(
+        [Parameter(Mandatory = $true)]
+        [System.Collections.IDictionary]$Definition,
+
+        [int]$WindowsBuild = 0
+    )
+
+    return ($null -eq (Get-AtlasToggleBuildSkipReason -Definition $Definition -WindowsBuild $WindowsBuild))
+}
+
 function Get-AtlasToggleDefinitionProblems {
     <#
     .SYNOPSIS
@@ -340,6 +383,17 @@ function Get-AtlasToggleDefinitionProblems {
     foreach ($boolKey in @('Menu', 'NoStateRecord')) {
         if ($Definition.Contains($boolKey) -and $Definition[$boolKey] -isnot [bool]) {
             $problems.Add("'$boolKey' must be `$true or `$false.")
+        }
+    }
+    # Optional Windows build gate for the whole toggle, mirroring the install tweak
+    # schema. A build of 0 means the number could not be read; the gate is then not
+    # enforced rather than hiding every gated toggle. See Test-AtlasToggleApplicable.
+    foreach ($buildKey in @('MinBuild', 'MaxBuild')) {
+        if ($Definition.Contains($buildKey)) {
+            $buildValue = $Definition[$buildKey]
+            if (-not (($buildValue -is [int]) -or ($buildValue -is [long]))) {
+                $problems.Add("'$buildKey' must be an integer Windows build number.")
+            }
         }
     }
 
