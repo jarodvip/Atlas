@@ -207,7 +207,7 @@ Describe 'Windows release eligibility' {
 Describe 'Bundled Windows release catalog' {
     It 'is read by the policy script for each supported build' {
         $catalog = Get-Content -LiteralPath (Join-Path (Split-Path -Parent $policy) 'windows-releases.json') -Raw | ConvertFrom-Json
-        foreach ($build in 26200, 26300) {
+        foreach ($build in 19045, 26200, 26300) {
             # Taken from the catalog so a routine refresh keeps this passing.
             $newest = @($catalog.releases | ForEach-Object { [version]$_.version } | Where-Object Build -eq $build | Sort-Object) | Select-Object -Last 1
             $newest | Should -Not -BeNullOrEmpty -Because "the catalog lists build $build"
@@ -232,7 +232,12 @@ Describe 'Limits on the official release transport' {
     }
     It 'reads the requested page, defaulting to the Windows 11 page' {
         $script:requestedUri = $null
-        Mock New-AtlasWindowsReleaseRequest { $script:requestedUri = $Uri; $script:requestFixture }
+        # Get-AtlasWindowsReleaseMarkdown disposes the response it reads, so each call
+        # needs its own fixture; sharing one would make the second read hit a closed stream.
+        Mock New-AtlasWindowsReleaseRequest {
+            $script:requestedUri = $Uri
+            New-ReleaseResponseFixture -Text (New-ReleaseMarkdownFixture)
+        }
         Get-AtlasWindowsReleaseMarkdown | Out-Null
         $script:requestedUri.AbsoluteUri | Should -Be 'https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information'
         Get-AtlasWindowsReleaseMarkdown -Page ([uri]'https://learn.microsoft.com/en-us/windows/release-health/release-information') | Out-Null
@@ -299,13 +304,21 @@ Describe 'Reviewed release catalog regeneration' {
         $catalog.supportedReleases.build | Should -Be @(19045,26200,26300)
         # The 22H2 row (2026-11-10) is still in the future on 2026-09-30 and is excluded.
         $catalog.releases.version | Should -Be @('10.0.26200.9999','10.0.26300.9457','10.0.26300.9550')
-        $catalog.sources.url | Should -Be @(
-            'https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information',
-            'https://learn.microsoft.com/en-us/windows/release-health/release-information'
+        # Both pages are read; the family order lists 22H2 first, so the consolidated
+        # page is the first source. Compare as a set, since the order is not part of
+        # the contract, only that each page contributed exactly one source.
+        @($catalog.sources).Count | Should -Be 2
+        @($catalog.sources.url | Sort-Object) | Should -Be @(
+            @(
+                'https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information',
+                'https://learn.microsoft.com/en-us/windows/release-health/release-information'
+            ) | Sort-Object
         )
-        ($catalog.sources | Where-Object { $_.url -like '*windows11-release-information' }).sha256 |
+        # The Windows 11 URL contains 'release-information' too, so match the Windows 11
+        # page on its full, distinct suffix and the consolidated page on the exact URL.
+        @($catalog.sources | Where-Object { $_.url -like '*windows11-release-information' }).sha256 |
             Should -Be (Get-FileHash $markdownPath -Algorithm SHA256).Hash
-        ($catalog.sources | Where-Object { $_.url -like '*release-information' }).sha256 |
+        @($catalog.sources | Where-Object { $_.url -eq 'https://learn.microsoft.com/en-us/windows/release-health/release-information' }).sha256 |
             Should -Be (Get-FileHash $consolidatedPath -Algorithm SHA256).Hash
         $catalog.asOfDate | Should -Be '2026-09-30'
     }

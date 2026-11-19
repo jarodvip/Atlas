@@ -329,7 +329,9 @@ pub const TRANSITIONS: &[Transition] = &[Transition {
 }];
 
 /// When a build stops getting security updates on the Home and Pro editions.
-/// Enterprise and Education get a longer window.
+/// Enterprise and Education get a longer window. Only builds Atlas can move off
+/// (the 24H2 transition) are listed: the ending warning leads to "Windows Update can
+/// move this PC", which is false for Windows 10 22H2, the final Windows 10 release.
 const HOME_PRO_END_OF_UPDATES: &[(u32, &str)] = &[(26100, "2026-10-13")];
 
 /// Whether this PC gets updates on the Home and Pro schedule.
@@ -494,6 +496,15 @@ mod tests {
         assert_eq!(TRANSITIONS[0].end_of_updates(), NaiveDate::from_ymd_opt(2028, 10, 10).unwrap());
         assert_eq!(transition_to("26h2").map(|t| t.target_build), Some(26300));
         assert_eq!(transition_to("25H2"), None);
+    }
+
+    #[test]
+    fn windows_10_22h2_gets_no_move_warning() {
+        // 22H2 is the final Windows 10 release with no transition, so the ending
+        // warning (which offers a move to a newer version) must not fire for it.
+        for edition in ["Core", "Professional", "ProfessionalWorkstation", "ProfessionalEducation"] {
+            assert_eq!(end_of_updates(&system(19045, edition)), None, "{edition}");
+        }
     }
 
     #[test]

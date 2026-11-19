@@ -1498,7 +1498,7 @@ function Restore-AtlasWindowsTransition {
             if ($entries.ContainsKey($item.Id) -and -not (Test-AtlasTransitionLiveMatches $item $live[$item.Id] $entries[$item.Id])) { $original = $false }
         }
         $ours = $live['pin.TargetReleaseVersion'].Present -and $live['pin.TargetReleaseVersion'].Kind -eq 'DWord' -and [int64]$live['pin.TargetReleaseVersion'].Data -eq 1 -and
-            [string]$live['pin.ProductVersion'].Data -ceq 'Windows 11' -and [string]$live['pin.TargetReleaseVersionInfo'].Data -ceq [string]$journal.target.release
+            [string]$live['pin.ProductVersion'].Data -cin @('Windows 10', 'Windows 11') -and [string]$live['pin.TargetReleaseVersionInfo'].Data -ceq [string]$journal.target.release
         if ($original) { $pin = 'unchanged' }
         elseif (-not $ours) {
             $pin = 'changed'

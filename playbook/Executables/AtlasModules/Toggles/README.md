@@ -44,6 +44,14 @@ consumers should read the state identifier from `catalog.json`, not infer it fro
 filename. State records store numeric values, so renaming identifiers does not change
 existing recorded choices. Direct callers using old state identifiers must update.
 
+`MinBuild` and `MaxBuild` gate the whole toggle to an inclusive Windows build range, the
+same gate the install tweaks use. Outside the range the engine applies nothing and
+records nothing, and a launcher refuses cleanly before any prompt or elevation, so a
+Windows 11-only policy (for example Recall, at `MinBuild = 22000`) is never written on
+Windows 10 22H2 (`19045`). As with the tweak gate, a build number of `0` (unreadable)
+leaves the gate unenforced rather than skipping every gated toggle. The values also
+appear in `catalog.json` (`minBuild`/`maxBuild`) so launchers can see a toggle's range.
+
 ```powershell
 @{
     Name            = 'Bluetooth'            # required; must equal the file name

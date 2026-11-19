@@ -201,10 +201,10 @@ file properties, under **About** in Settings and in diagnostics. A tester build 
 `ATLAS_RC_ID` doesn't start with it, and so does the tag release when `AtlasManager.exe`
 and `playbook.conf` disagree.
 
-It also rewrites the `Atlas vX.Y.Z for Windows 11 …` options in
-`.github/ISSUE_TEMPLATE/bug_report.yml`, which a test keeps equal to the `playbook.conf`
-version. If `playbook.conf` already has the version, the script leaves it alone and only
-brings the other files in line with it.
+It also rewrites the `Atlas vX.Y.Z for Windows 10 22H2` and `Atlas vX.Y.Z for Windows 11`
+options in `.github/ISSUE_TEMPLATE/bug_report.yml`, which a test keeps equal to the
+`playbook.conf` version. If `playbook.conf` already has the version, the script leaves it
+alone and only brings the other files in line with it.
 
 Review and commit the diff, then tag `v0.7.0` to start the release workflow.
 

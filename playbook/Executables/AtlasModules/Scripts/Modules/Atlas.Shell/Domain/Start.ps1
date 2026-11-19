@@ -71,17 +71,13 @@ function Set-AtlasStartLayout {
         (build 19045) has neither the Configure Start Pins policy nor this layout's
         Windows 11 pins, so the layout is left unapplied there.
     #>
-    $version = Get-AtlasStartWindowsVersion
-    if ($version.Build -gt 0 -and $version.Build -lt 22000) {
-        Write-AtlasLog -Message "Skipping the Windows 11 Start pin layout on OS build $($version.Build): Windows 10 has no Configure Start Pins policy."
-        return
-    }
-
+    # The layout artifact ships in the package regardless of build. Validate that it is
+    # present and well-formed before the Windows-10 skip, so a packaging regression is
+    # a loud failure on every build instead of only surfacing later on a Windows 11 PC.
     $layoutJson = Get-AtlasStartLayoutPath
     if (-not (Test-Path -LiteralPath $layoutJson -PathType Leaf)) {
         throw "The Windows 11 Start layout is missing at '$layoutJson'."
     }
-
     try {
         $layout = Get-Content -LiteralPath $layoutJson -Raw -ErrorAction Stop |
             ConvertFrom-Json -ErrorAction Stop
@@ -91,6 +87,12 @@ function Set-AtlasStartLayout {
     }
     if ($layout.applyOnce -ne $true -or @($layout.pinnedList).Count -eq 0) {
         throw 'The Windows 11 Start layout must apply once and contain at least one pin.'
+    }
+
+    $version = Get-AtlasStartWindowsVersion
+    if ($version.Build -gt 0 -and $version.Build -lt 22000) {
+        Write-AtlasLog -Message "Skipping the Windows 11 Start pin layout on OS build $($version.Build): Windows 10 has no Configure Start Pins policy."
+        return
     }
 
     if (Test-AtlasStartPinPolicySupported -Build $version.Build -Revision $version.Revision) {

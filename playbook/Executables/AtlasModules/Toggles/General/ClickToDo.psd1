@@ -2,6 +2,8 @@
     Name        = 'ClickToDo'
     Description = 'Click To Do through the Windows AI DisableClickToDo policy.'
     Elevation   = 'Admin'
+    # Click To Do and the WindowsAI policy are Windows 11 features.
+    MinBuild    = 22000
     States      = @(
         @{
             Name       = 'Disable'

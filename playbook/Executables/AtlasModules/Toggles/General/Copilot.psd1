@@ -2,6 +2,8 @@
     Name        = 'Copilot'
     Description = 'Microsoft Copilot taskbar button, app and policy. Both states refresh Explorer so the taskbar updates. Copilot requires an installed Edge; on 24H2 it is delivered as a Store app installed through the trusted WinGet resolver.'
     Elevation   = 'Admin'
+    # Copilot, the taskbar button and the RemoveMicrosoftCopilotApp policy are Windows 11.
+    MinBuild    = 22000
     Script      = 'Copilot.ps1'
     States      = @(
         @{

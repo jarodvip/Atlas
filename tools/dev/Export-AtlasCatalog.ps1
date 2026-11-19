@@ -31,6 +31,7 @@ param(
 
 Set-StrictMode -Version 3.0
 $ErrorActionPreference = 'Stop'
+. (Join-Path $PSScriptRoot 'AtlasCatalogJson.ps1')
 
 if (-not $RepoRoot) {
     $RepoRoot = (Resolve-Path -LiteralPath (Join-Path -Path $PSScriptRoot -ChildPath '..\..')).Path
@@ -136,6 +137,12 @@ function Get-ToggleCatalog {
             warning       = Get-OptionalValue -Table $definition -Key 'Warning'
             states        = $states.ToArray()
         }
+        # The build gate is part of the toggle's declared applicability, so the catalog
+        # consumer (AtlasToolbox launchers) can see it, not just the engine.
+        $minBuild = Get-OptionalValue -Table $definition -Key 'MinBuild'
+        $maxBuild = Get-OptionalValue -Table $definition -Key 'MaxBuild'
+        if ($null -ne $minBuild) { $toggle['minBuild'] = [int]$minBuild }
+        if ($null -ne $maxBuild) { $toggle['maxBuild'] = [int]$maxBuild }
         $toggles.Add([pscustomobject]$toggle)
     }
     return @($toggles | Sort-Object -Property group, name)
@@ -323,7 +330,7 @@ $catalog = [ordered]@{
     toggles       = $toggles
 }
 $outputs = [ordered]@{
-    $catalogPath    = ((ConvertTo-Json -InputObject $catalog -Depth 8) -replace "`r`n", "`n") + "`n"
+    $catalogPath    = ((ConvertTo-AtlasCanonicalJson -InputObject $catalog) -replace "`r`n", "`n") + "`n"
     $togglesDocPath = (ConvertTo-ToggleMarkdown -Toggles $toggles).TrimEnd() + "`n"
     $tweaksDocPath  = (ConvertTo-TweakMarkdown -Catalog $tweaks).TrimEnd() + "`n"
 }

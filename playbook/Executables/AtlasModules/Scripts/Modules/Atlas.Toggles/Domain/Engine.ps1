@@ -913,6 +913,25 @@ function Invoke-AtlasToggle {
         Reset-AtlasRunOutcome
     }
 
+    # A toggle whose definition names a Windows build range does not apply outside it
+    # (for example a Windows 11-only policy on Windows 10). Refuse cleanly before any
+    # work, recording, elevation or state prompt, so a launcher run on an unsupported
+    # build does nothing rather than writing values Windows does not honor — and a
+    # Menu toggle does not put up a picker it will then refuse.
+    $buildSkipReason = Get-AtlasToggleBuildSkipReason -Definition $definition `
+        -WindowsBuild ([int](Get-AtlasContext).WindowsBuild)
+    if ($buildSkipReason) {
+        $message = "Toggle '$($definition['Name'])' $buildSkipReason on this PC, so it was not applied."
+        if (-not $Silent) {
+            Write-AtlasNotApplied -Title (Get-AtlasToggleDisplayName -Definition $definition -StateEntry @{} -LauncherPath $LauncherPath) -Reason $message
+            Wait-AtlasExit
+        }
+        else {
+            Write-AtlasLog -Message $message
+        }
+        return
+    }
+
     # A Menu toggle asks before its state is known, so the heading comes first and the
     # preamble later skips it. A nested choice stays under the enclosing run's heading
     # and window title.
@@ -927,24 +946,6 @@ function Invoke-AtlasToggle {
     $elevation = Get-AtlasToggleElevation -Definition $definition
     $work = Get-AtlasToggleStateWork -Definition $definition -StateEntry $stateEntry
     $title = Get-AtlasToggleDisplayName -Definition $definition -StateEntry $stateEntry -LauncherPath $LauncherPath -PreferMenuLabel
-
-    # A toggle whose definition names a Windows build range does not apply outside it
-    # (for example a Windows 11-only policy on Windows 10). Refuse cleanly before any
-    # work, recording or elevation, so a launcher run on an unsupported build does
-    # nothing rather than writing values Windows does not honor.
-    $buildSkipReason = Get-AtlasToggleBuildSkipReason -Definition $definition `
-        -WindowsBuild ([int](Get-AtlasContext).WindowsBuild)
-    if ($buildSkipReason) {
-        $message = "Toggle '$($definition['Name'])' $buildSkipReason on this PC, so state '$stateName' was not applied."
-        if (-not $Silent) {
-            Write-AtlasNotApplied -Title $title -Reason $message
-            Wait-AtlasExit
-        }
-        else {
-            Write-AtlasLog -Message $message
-        }
-        return
-    }
 
     if ($DeferPostAction -and (-not $work.User -or $work.Machine -or $work.ProtectedUserRegistry -or
         $JustContext -or $MachineOnly -or

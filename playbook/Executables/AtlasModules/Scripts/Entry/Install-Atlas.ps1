@@ -348,7 +348,7 @@ function Test-AtlasInstallRequirement {
         Detail = switch ($release) {
             'Released' { 'a published Windows release' }
             'Preview' { 'Insider or preview Windows builds are not supported' }
-            'Unlisted' { "build $WindowsBuild.$WindowsRevision is not in Microsoft's list of public Windows 11 releases; Release Preview and other preview builds are not supported, so check again once Microsoft lists it" }
+            'Unlisted' { "build $WindowsBuild.$WindowsRevision is not in Microsoft's list of public Windows releases; Release Preview and other preview builds are not supported, so check again once Microsoft lists it" }
             default { 'Windows release could not be verified; connect to the internet and retry with official supported Windows media' }
         }
     }

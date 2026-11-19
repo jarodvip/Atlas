@@ -194,31 +194,61 @@ function Get-AtlasWindowsReleaseStatus {
     } catch { Write-Verbose "The bundled Windows release catalog could not be read: $_" }
     if ($NoRefresh) { return 'Unknown' }
     try {
+        # The cache records both the versions read and the builds whose page loaded, so
+        # a build whose page failed is never answered from a lookup that did not read it.
         $cached = Get-Variable -Name AtlasWindowsReleasedVersions -Scope Script -ErrorAction SilentlyContinue
         if ($null -eq $cached) {
             # One read per official page: the Windows 11 page for 25H2/26H2 and the
             # consolidated page for 22H2. A page that fails to load contributes no
-            # versions for its builds rather than failing the other page's lookup.
+            # versions for its builds and is not marked covered, so those builds fall
+            # through to 'Unknown' (retry later) rather than 'Unlisted'.
             $versions = New-Object 'Collections.Generic.List[string]'
+            $coveredBuilds = New-Object 'Collections.Generic.HashSet[int]'
             $pages = @(Get-AtlasWindowsReleaseFamily | Select-Object -ExpandProperty Page -Unique)
+            $allPagesLoaded = $true
             foreach ($page in $pages) {
+                $pageLoaded = $false
                 try {
                     $markdown = Get-AtlasWindowsReleaseMarkdown -Page ([uri]$page)
+                    $pageLoaded = $true
                     foreach ($buildFamily in @(Get-AtlasWindowsReleaseFamily | Where-Object Page -eq $page)) {
                         foreach ($release in @(ConvertFrom-AtlasWindowsReleaseMarkdown -Markdown $markdown -Build $buildFamily.Build)) {
                             $versions.Add([string]$release.version)
                         }
+                        # The page parsed for this build's section, so a miss here is a
+                        # real "not published" rather than an unread page.
+                        $null = $coveredBuilds.Add([int]$buildFamily.Build)
                     }
                 }
                 catch { Write-Verbose "Windows release information is unavailable for '$page': $_" }
+                if (-not $pageLoaded) { $allPagesLoaded = $false }
             }
-            if ($versions.Count -eq 0) { return 'Unknown' }
-            $script:AtlasWindowsReleasedVersions = @($versions)
+            if ($versions.Count -eq 0) {
+                # No page yielded a version: do not cache, so the next check retries
+                # rather than treating the whole lookup as read-but-empty.
+                return 'Unknown'
+            }
+            if (-not $allPagesLoaded) {
+                # Keep the answer for the pages that loaded, but do not cache, so a
+                # later check can retry the page that failed. A version found on a
+                # loaded page is genuinely published; a miss is only decisive for
+                # builds whose own page was read, and Unknown for the rest.
+                if ($versions -contains $Version.ToString()) { return 'Released' }
+                if ($coveredBuilds.Contains([int]$Version.Build)) { return 'Unlisted' }
+                return 'Unknown'
+            }
+            $script:AtlasWindowsReleasedVersions = [pscustomobject]@{
+                Versions = @($versions)
+                CoveredBuilds = $coveredBuilds
+            }
         }
-        if ($script:AtlasWindowsReleasedVersions -contains $Version.ToString()) { return 'Released' }
-        # Read, but left out: most often a Release Preview build, or an update the
-        # page doesn't list yet.
-        return 'Unlisted'
+        $lookup = $script:AtlasWindowsReleasedVersions
+        if ($lookup.Versions -contains $Version.ToString()) { return 'Released' }
+        # Its page was read and the version is not there: a Release Preview build or an
+        # update the page does not list yet.
+        if ($lookup.CoveredBuilds.Contains([int]$Version.Build)) { return 'Unlisted' }
+        # Its page could not be read; the build is unverified, not unlisted.
+        return 'Unknown'
     } catch { Write-Verbose "Windows release information is unavailable: $_" }
     # Neither missing enrollment indicators nor a failed lookup proves an Insider build.
     'Unknown'

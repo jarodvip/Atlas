@@ -1,839 +1,839 @@
 {
-    "schemaVersion":  3,
-    "product":  "Windows",
-    "supportedReleases":  [
-                              {
-                                  "release":  "22H2",
-                                  "build":  19045
-                              },
-                              {
-                                  "release":  "25H2",
-                                  "build":  26200
-                              },
-                              {
-                                  "release":  "26H2",
-                                  "build":  26300
-                              }
-                          ],
-    "sources":  [
-                    {
-                        "url":  "https://learn.microsoft.com/en-us/windows/release-health/release-information",
-                        "commit":  "d3bdb403e32955fc931c829072a78b115cbd72fc",
-                        "sha256":  "19EEBCEFE09644825DCB9DA45AAE99DABDDA8617DB25EE10109223DAEED80338",
-                        "updatedAt":  "2026-11-13T21:11:00.0000000Z"
-                    },
-                    {
-                        "url":  "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
-                        "commit":  "d3bdb403e32955fc931c829072a78b115cbd72fc",
-                        "sha256":  "6DFE7ACAB9FF92031BA3793DAB30A7152FB898A8277207BCD65C6347027F2A4B",
-                        "updatedAt":  "2026-11-13T21:11:00.0000000Z"
-                    }
-                ],
-    "asOfDate":  "2026-11-14",
-    "releases":  [
-                     {
-                         "version":  "10.0.19045.2130",
-                         "availableDate":  "2022-10-18",
-                         "updateType":  "2022-10 C",
-                         "kb":  null
-                     },
-                     {
-                         "version":  "10.0.19045.2251",
-                         "availableDate":  "2022-11-08",
-                         "updateType":  "2022-11 B",
-                         "kb":  "KB5019959"
-                     },
-                     {
-                         "version":  "10.0.19045.2311",
-                         "availableDate":  "2022-11-15",
-                         "updateType":  "2022-11 C",
-                         "kb":  "KB5020030"
-                     },
-                     {
-                         "version":  "10.0.19045.2364",
-                         "availableDate":  "2022-12-13",
-                         "updateType":  "2022-12 B",
-                         "kb":  "KB5021233"
-                     },
-                     {
-                         "version":  "10.0.19045.2486",
-                         "availableDate":  "2023-01-10",
-                         "updateType":  "2023-01 B",
-                         "kb":  "KB5022282"
-                     },
-                     {
-                         "version":  "10.0.19045.2546",
-                         "availableDate":  "2023-01-19",
-                         "updateType":  "2023-01 C",
-                         "kb":  "KB5019275"
-                     },
-                     {
-                         "version":  "10.0.19045.2604",
-                         "availableDate":  "2023-02-14",
-                         "updateType":  "2023-02 B",
-                         "kb":  "KB5022834"
-                     },
-                     {
-                         "version":  "10.0.19045.2673",
-                         "availableDate":  "2023-02-21",
-                         "updateType":  "2023-02 C",
-                         "kb":  "KB5022906"
-                     },
-                     {
-                         "version":  "10.0.19045.2728",
-                         "availableDate":  "2023-03-14",
-                         "updateType":  "2023-03 B",
-                         "kb":  "KB5023696"
-                     },
-                     {
-                         "version":  "10.0.19045.2788",
-                         "availableDate":  "2023-03-21",
-                         "updateType":  "2023-03 C",
-                         "kb":  "KB5023773"
-                     },
-                     {
-                         "version":  "10.0.19045.2846",
-                         "availableDate":  "2023-04-11",
-                         "updateType":  "2023-04 B",
-                         "kb":  "KB5025221"
-                     },
-                     {
-                         "version":  "10.0.19045.2913",
-                         "availableDate":  "2023-04-25",
-                         "updateType":  "2023-04 D",
-                         "kb":  "KB5025297"
-                     },
-                     {
-                         "version":  "10.0.19045.2965",
-                         "availableDate":  "2023-05-09",
-                         "updateType":  "2023-05 B",
-                         "kb":  "KB5026361"
-                     },
-                     {
-                         "version":  "10.0.19045.3031",
-                         "availableDate":  "2023-05-23",
-                         "updateType":  "2023-05 D",
-                         "kb":  "KB5026435"
-                     },
-                     {
-                         "version":  "10.0.19045.3086",
-                         "availableDate":  "2023-06-13",
-                         "updateType":  "2023-06 B",
-                         "kb":  "KB5027215"
-                     },
-                     {
-                         "version":  "10.0.19045.3155",
-                         "availableDate":  "2023-06-27",
-                         "updateType":  "2023-06 D",
-                         "kb":  "KB5027293"
-                     },
-                     {
-                         "version":  "10.0.19045.3208",
-                         "availableDate":  "2023-07-11",
-                         "updateType":  "2023-07 B",
-                         "kb":  "KB5028166"
-                     },
-                     {
-                         "version":  "10.0.19045.3271",
-                         "availableDate":  "2023-07-25",
-                         "updateType":  "2023-07 D",
-                         "kb":  "KB5028244"
-                     },
-                     {
-                         "version":  "10.0.19045.3324",
-                         "availableDate":  "2023-08-08",
-                         "updateType":  "2023-08 B",
-                         "kb":  "KB5029244"
-                     },
-                     {
-                         "version":  "10.0.19045.3393",
-                         "availableDate":  "2023-08-22",
-                         "updateType":  "2023-08 D",
-                         "kb":  "KB5029331"
-                     },
-                     {
-                         "version":  "10.0.19045.3448",
-                         "availableDate":  "2023-09-12",
-                         "updateType":  "2023-09 B",
-                         "kb":  "KB5030211"
-                     },
-                     {
-                         "version":  "10.0.19045.3516",
-                         "availableDate":  "2023-09-26",
-                         "updateType":  "2023-09 D",
-                         "kb":  "KB5030300"
-                     },
-                     {
-                         "version":  "10.0.19045.3570",
-                         "availableDate":  "2023-10-10",
-                         "updateType":  "2023-10 B",
-                         "kb":  "KB5031356"
-                     },
-                     {
-                         "version":  "10.0.19045.3636",
-                         "availableDate":  "2023-10-26",
-                         "updateType":  "2023-10 D",
-                         "kb":  "KB5031445"
-                     },
-                     {
-                         "version":  "10.0.19045.3693",
-                         "availableDate":  "2023-11-14",
-                         "updateType":  "2023-11 B",
-                         "kb":  "KB5032189"
-                     },
-                     {
-                         "version":  "10.0.19045.3758",
-                         "availableDate":  "2023-11-30",
-                         "updateType":  "2023-11 D",
-                         "kb":  "KB5032278"
-                     },
-                     {
-                         "version":  "10.0.19045.3803",
-                         "availableDate":  "2023-12-12",
-                         "updateType":  "2023-12 B",
-                         "kb":  "KB5033372"
-                     },
-                     {
-                         "version":  "10.0.19045.3930",
-                         "availableDate":  "2024-01-09",
-                         "updateType":  "2024-01 B",
-                         "kb":  "KB5034122"
-                     },
-                     {
-                         "version":  "10.0.19045.3996",
-                         "availableDate":  "2024-01-23",
-                         "updateType":  "2024-01 D",
-                         "kb":  "KB5034203"
-                     },
-                     {
-                         "version":  "10.0.19045.4046",
-                         "availableDate":  "2024-02-13",
-                         "updateType":  "2024-02 B",
-                         "kb":  "KB5034763"
-                     },
-                     {
-                         "version":  "10.0.19045.4123",
-                         "availableDate":  "2024-02-29",
-                         "updateType":  "2024-02 D",
-                         "kb":  "KB5034843"
-                     },
-                     {
-                         "version":  "10.0.19045.4170",
-                         "availableDate":  "2024-03-12",
-                         "updateType":  "2024-03 B",
-                         "kb":  "KB5035845"
-                     },
-                     {
-                         "version":  "10.0.19045.4239",
-                         "availableDate":  "2024-03-26",
-                         "updateType":  "2024-03 D",
-                         "kb":  "KB5035941"
-                     },
-                     {
-                         "version":  "10.0.19045.4291",
-                         "availableDate":  "2024-04-09",
-                         "updateType":  "2024-04 B",
-                         "kb":  "KB5036892"
-                     },
-                     {
-                         "version":  "10.0.19045.4355",
-                         "availableDate":  "2024-04-23",
-                         "updateType":  "2024-04 D",
-                         "kb":  "KB5036979"
-                     },
-                     {
-                         "version":  "10.0.19045.4412",
-                         "availableDate":  "2024-05-14",
-                         "updateType":  "2024-05 B",
-                         "kb":  "KB5037768"
-                     },
-                     {
-                         "version":  "10.0.19045.4474",
-                         "availableDate":  "2024-05-29",
-                         "updateType":  "2024-05 D",
-                         "kb":  "KB5037849"
-                     },
-                     {
-                         "version":  "10.0.19045.4529",
-                         "availableDate":  "2024-06-11",
-                         "updateType":  "2024-06 B",
-                         "kb":  "KB5039211"
-                     },
-                     {
-                         "version":  "10.0.19045.4598",
-                         "availableDate":  "2024-06-25",
-                         "updateType":  "2024-06 D",
-                         "kb":  "KB5039299"
-                     },
-                     {
-                         "version":  "10.0.19045.4651",
-                         "availableDate":  "2024-07-09",
-                         "updateType":  "2024-07 B",
-                         "kb":  "KB5040427"
-                     },
-                     {
-                         "version":  "10.0.19045.4717",
-                         "availableDate":  "2024-07-23",
-                         "updateType":  "2024-07 D",
-                         "kb":  "KB5040525"
-                     },
-                     {
-                         "version":  "10.0.19045.4780",
-                         "availableDate":  "2024-08-13",
-                         "updateType":  "2024-08 B",
-                         "kb":  "KB5041580"
-                     },
-                     {
-                         "version":  "10.0.19045.4842",
-                         "availableDate":  "2024-08-29",
-                         "updateType":  "2024-08 D",
-                         "kb":  "KB5041582"
-                     },
-                     {
-                         "version":  "10.0.19045.4894",
-                         "availableDate":  "2024-09-10",
-                         "updateType":  "2024-09 B",
-                         "kb":  "KB5043064"
-                     },
-                     {
-                         "version":  "10.0.19045.4957",
-                         "availableDate":  "2024-09-24",
-                         "updateType":  "2024-09 D",
-                         "kb":  "KB5043131"
-                     },
-                     {
-                         "version":  "10.0.19045.5011",
-                         "availableDate":  "2024-10-08",
-                         "updateType":  "2024-10 B",
-                         "kb":  "KB5044273"
-                     },
-                     {
-                         "version":  "10.0.19045.5073",
-                         "availableDate":  "2024-10-22",
-                         "updateType":  "2024-10 D",
-                         "kb":  "KB5045594"
-                     },
-                     {
-                         "version":  "10.0.19045.5131",
-                         "availableDate":  "2024-11-12",
-                         "updateType":  "2024-11 B",
-                         "kb":  "KB5046613"
-                     },
-                     {
-                         "version":  "10.0.19045.5198",
-                         "availableDate":  "2024-11-21",
-                         "updateType":  "2024-11 D",
-                         "kb":  "KB5046714"
-                     },
-                     {
-                         "version":  "10.0.19045.5247",
-                         "availableDate":  "2024-12-10",
-                         "updateType":  "2024-12 B",
-                         "kb":  "KB5048652"
-                     },
-                     {
-                         "version":  "10.0.19045.5371",
-                         "availableDate":  "2025-01-14",
-                         "updateType":  "2025-01 B",
-                         "kb":  "KB5049981"
-                     },
-                     {
-                         "version":  "10.0.19045.5440",
-                         "availableDate":  "2025-01-28",
-                         "updateType":  "2025-01 D",
-                         "kb":  "KB5050081"
-                     },
-                     {
-                         "version":  "10.0.19045.5487",
-                         "availableDate":  "2025-02-11",
-                         "updateType":  "2025-02 B",
-                         "kb":  "KB5051974"
-                     },
-                     {
-                         "version":  "10.0.19045.5555",
-                         "availableDate":  "2025-02-25",
-                         "updateType":  "2025-02 D",
-                         "kb":  "KB5052077"
-                     },
-                     {
-                         "version":  "10.0.19045.5608",
-                         "availableDate":  "2025-03-11",
-                         "updateType":  "2025-03 B",
-                         "kb":  "KB5053606"
-                     },
-                     {
-                         "version":  "10.0.19045.5679",
-                         "availableDate":  "2025-03-25",
-                         "updateType":  "2025-03 D",
-                         "kb":  "KB5053643"
-                     },
-                     {
-                         "version":  "10.0.19045.5737",
-                         "availableDate":  "2025-04-08",
-                         "updateType":  "2025-04 B",
-                         "kb":  "KB5055518"
-                     },
-                     {
-                         "version":  "10.0.19045.5796",
-                         "availableDate":  "2025-04-22",
-                         "updateType":  "2025-04 D",
-                         "kb":  "KB5055612"
-                     },
-                     {
-                         "version":  "10.0.19045.5854",
-                         "availableDate":  "2025-05-13",
-                         "updateType":  "2025-05 B",
-                         "kb":  "KB5058379"
-                     },
-                     {
-                         "version":  "10.0.19045.5856",
-                         "availableDate":  "2025-05-19",
-                         "updateType":  "2025-05 OOB",
-                         "kb":  "KB5061768"
-                     },
-                     {
-                         "version":  "10.0.19045.5859",
-                         "availableDate":  "2025-05-27",
-                         "updateType":  "2025-05 OOB",
-                         "kb":  "KB5061979"
-                     },
-                     {
-                         "version":  "10.0.19045.5917",
-                         "availableDate":  "2025-05-28",
-                         "updateType":  "2025-05 D",
-                         "kb":  "KB5058481"
-                     },
-                     {
-                         "version":  "10.0.19045.5965",
-                         "availableDate":  "2025-06-10",
-                         "updateType":  "2025-06 B",
-                         "kb":  "KB5060533"
-                     },
-                     {
-                         "version":  "10.0.19045.5968",
-                         "availableDate":  "2025-06-16",
-                         "updateType":  "2025-06 OOB",
-                         "kb":  "KB5063159"
-                     },
-                     {
-                         "version":  "10.0.19045.6036",
-                         "availableDate":  "2025-06-24",
-                         "updateType":  "2025-06 D",
-                         "kb":  "KB5061087"
-                     },
-                     {
-                         "version":  "10.0.19045.6093",
-                         "availableDate":  "2025-07-08",
-                         "updateType":  "2025-07 B",
-                         "kb":  "KB5062554"
-                     },
-                     {
-                         "version":  "10.0.19045.6159",
-                         "availableDate":  "2025-07-22",
-                         "updateType":  "2025-07 D",
-                         "kb":  "KB5062649"
-                     },
-                     {
-                         "version":  "10.0.19045.6216",
-                         "availableDate":  "2025-08-12",
-                         "updateType":  "2025-08 B",
-                         "kb":  "KB5063709"
-                     },
-                     {
-                         "version":  "10.0.19045.6218",
-                         "availableDate":  "2025-08-19",
-                         "updateType":  "2025-08 OOB",
-                         "kb":  "KB5066188"
-                     },
-                     {
-                         "version":  "10.0.19045.6282",
-                         "availableDate":  "2025-08-26",
-                         "updateType":  "2025-08 D",
-                         "kb":  "KB5063842"
-                     },
-                     {
-                         "version":  "10.0.19045.6332",
-                         "availableDate":  "2025-09-09",
-                         "updateType":  "2025-09 B",
-                         "kb":  "KB5065429"
-                     },
-                     {
-                         "version":  "10.0.19045.6396",
-                         "availableDate":  "2025-09-25",
-                         "updateType":  "2025-09 D",
-                         "kb":  "KB5066198"
-                     },
-                     {
-                         "version":  "10.0.19045.6456",
-                         "availableDate":  "2025-10-14",
-                         "updateType":  "2025-10 B",
-                         "kb":  "KB5066791"
-                     },
-                     {
-                         "version":  "10.0.19045.6466",
-                         "availableDate":  "2025-11-11",
-                         "updateType":  "2025-11 OOB",
-                         "kb":  "KB5071959"
-                     },
-                     {
-                         "version":  "10.0.19045.6575",
-                         "availableDate":  "2025-11-11",
-                         "updateType":  "2025-11 B",
-                         "kb":  "KB5068781"
-                     },
-                     {
-                         "version":  "10.0.19045.6691",
-                         "availableDate":  "2025-12-09",
-                         "updateType":  "2025-12 B",
-                         "kb":  "KB5071546"
-                     },
-                     {
-                         "version":  "10.0.19045.6693",
-                         "availableDate":  "2025-12-18",
-                         "updateType":  "2025-12 OOB",
-                         "kb":  "KB5074976"
-                     },
-                     {
-                         "version":  "10.0.19045.6809",
-                         "availableDate":  "2026-01-13",
-                         "updateType":  "2026-01 B",
-                         "kb":  "KB5073724"
-                     },
-                     {
-                         "version":  "10.0.19045.6811",
-                         "availableDate":  "2026-01-17",
-                         "updateType":  "2026-01 OOB",
-                         "kb":  "KB5077796"
-                     },
-                     {
-                         "version":  "10.0.19045.6812",
-                         "availableDate":  "2026-01-24",
-                         "updateType":  "2026-01 OOB",
-                         "kb":  "KB5078129"
-                     },
-                     {
-                         "version":  "10.0.19045.6937",
-                         "availableDate":  "2026-02-10",
-                         "updateType":  "2026-02 B",
-                         "kb":  "KB5075912"
-                     },
-                     {
-                         "version":  "10.0.19045.7058",
-                         "availableDate":  "2026-03-10",
-                         "updateType":  "2026-03 B",
-                         "kb":  "KB5078885"
-                     },
-                     {
-                         "version":  "10.0.19045.7184",
-                         "availableDate":  "2026-04-14",
-                         "updateType":  "2026-04 B",
-                         "kb":  "KB5082200"
-                     },
-                     {
-                         "version":  "10.0.19045.7291",
-                         "availableDate":  "2026-05-12",
-                         "updateType":  "2026-05 B",
-                         "kb":  "KB5087544"
-                     },
-                     {
-                         "version":  "10.0.19045.7417",
-                         "availableDate":  "2026-06-09",
-                         "updateType":  "2026-06 B",
-                         "kb":  "KB5094127"
-                     },
-                     {
-                         "version":  "10.0.19045.7548",
-                         "availableDate":  "2026-07-14",
-                         "updateType":  "2026-07 B",
-                         "kb":  "KB5099539"
-                     },
-                     {
-                         "version":  "10.0.19045.7663",
-                         "availableDate":  "2026-08-11",
-                         "updateType":  "2026-08 B",
-                         "kb":  "KB5120249"
-                     },
-                     {
-                         "version":  "10.0.19045.7725",
-                         "availableDate":  "2026-09-08",
-                         "updateType":  "2026-09 B",
-                         "kb":  "KB5122878"
-                     },
-                     {
-                         "version":  "10.0.19045.7727",
-                         "availableDate":  "2026-09-14",
-                         "updateType":  "2026-09 OOB",
-                         "kb":  "KB5129236"
-                     },
-                     {
-                         "version":  "10.0.19045.7807",
-                         "availableDate":  "2026-10-13",
-                         "updateType":  "2026-10 B",
-                         "kb":  "KB5126657"
-                     },
-                     {
-                         "version":  "10.0.19045.7811",
-                         "availableDate":  "2026-10-26",
-                         "updateType":  "2026-10 OOB",
-                         "kb":  "KB5134125"
-                     },
-                     {
-                         "version":  "10.0.19045.7846",
-                         "availableDate":  "2026-11-10",
-                         "updateType":  "2026-11 B",
-                         "kb":  "KB5131096"
-                     },
-                     {
-                         "version":  "10.0.19045.7850",
-                         "availableDate":  "2026-11-13",
-                         "updateType":  "2026-11 OOB",
-                         "kb":  "KB5136493"
-                     },
-                     {
-                         "version":  "10.0.26200.6584",
-                         "availableDate":  "2025-09-30",
-                         "updateType":  "",
-                         "kb":  null
-                     },
-                     {
-                         "version":  "10.0.26200.6899",
-                         "availableDate":  "2025-10-14",
-                         "updateType":  "2025-10 B",
-                         "kb":  "KB5066835"
-                     },
-                     {
-                         "version":  "10.0.26200.6901",
-                         "availableDate":  "2025-10-20",
-                         "updateType":  "2025-10 OOB",
-                         "kb":  "KB5070773"
-                     },
-                     {
-                         "version":  "10.0.26200.7019",
-                         "availableDate":  "2025-10-28",
-                         "updateType":  "2025-10 D",
-                         "kb":  "KB5067036"
-                     },
-                     {
-                         "version":  "10.0.26200.7171",
-                         "availableDate":  "2025-11-11",
-                         "updateType":  "2025-11 B",
-                         "kb":  "KB5068861"
-                     },
-                     {
-                         "version":  "10.0.26200.7309",
-                         "availableDate":  "2025-12-01",
-                         "updateType":  "2025-11 D",
-                         "kb":  "KB5070311"
-                     },
-                     {
-                         "version":  "10.0.26200.7462",
-                         "availableDate":  "2025-12-09",
-                         "updateType":  "2025-12 B",
-                         "kb":  "KB5072033"
-                     },
-                     {
-                         "version":  "10.0.26200.7623",
-                         "availableDate":  "2026-01-13",
-                         "updateType":  "2026-01 B",
-                         "kb":  "KB5074109"
-                     },
-                     {
-                         "version":  "10.0.26200.7627",
-                         "availableDate":  "2026-01-17",
-                         "updateType":  "2026-01 OOB",
-                         "kb":  "KB5077744"
-                     },
-                     {
-                         "version":  "10.0.26200.7628",
-                         "availableDate":  "2026-01-24",
-                         "updateType":  "2026-01 OOB",
-                         "kb":  "KB5078127"
-                     },
-                     {
-                         "version":  "10.0.26200.7705",
-                         "availableDate":  "2026-01-29",
-                         "updateType":  "2026-01 D",
-                         "kb":  "KB5074105"
-                     },
-                     {
-                         "version":  "10.0.26200.7840",
-                         "availableDate":  "2026-02-10",
-                         "updateType":  "2026-02 B",
-                         "kb":  "KB5077181"
-                     },
-                     {
-                         "version":  "10.0.26200.7922",
-                         "availableDate":  "2026-02-24",
-                         "updateType":  "2026-02 D",
-                         "kb":  "KB5077241"
-                     },
-                     {
-                         "version":  "10.0.26200.8037",
-                         "availableDate":  "2026-03-10",
-                         "updateType":  "2026-03 B",
-                         "kb":  "KB5079473"
-                     },
-                     {
-                         "version":  "10.0.26200.8039",
-                         "availableDate":  "2026-03-21",
-                         "updateType":  "2026-03 OOB",
-                         "kb":  "KB5085516"
-                     },
-                     {
-                         "version":  "10.0.26200.8116",
-                         "availableDate":  "2026-03-26",
-                         "updateType":  "2026-03 D",
-                         "kb":  "KB5079391"
-                     },
-                     {
-                         "version":  "10.0.26200.8117",
-                         "availableDate":  "2026-03-31",
-                         "updateType":  "2026-03 OOB",
-                         "kb":  "KB5086672"
-                     },
-                     {
-                         "version":  "10.0.26200.8246",
-                         "availableDate":  "2026-04-14",
-                         "updateType":  "2026-04 B",
-                         "kb":  "KB5083769"
-                     },
-                     {
-                         "version":  "10.0.26200.8328",
-                         "availableDate":  "2026-04-30",
-                         "updateType":  "2026-04 D",
-                         "kb":  "KB5083631"
-                     },
-                     {
-                         "version":  "10.0.26200.8457",
-                         "availableDate":  "2026-05-12",
-                         "updateType":  "2026-05 B",
-                         "kb":  "KB5089549"
-                     },
-                     {
-                         "version":  "10.0.26200.8524",
-                         "availableDate":  "2026-05-26",
-                         "updateType":  "2026-05 D",
-                         "kb":  "KB5089573"
-                     },
-                     {
-                         "version":  "10.0.26200.8655",
-                         "availableDate":  "2026-06-09",
-                         "updateType":  "2026-06 B",
-                         "kb":  "KB5094126"
-                     },
-                     {
-                         "version":  "10.0.26200.8737",
-                         "availableDate":  "2026-06-23",
-                         "updateType":  "2026-06 D",
-                         "kb":  "KB5095093"
-                     },
-                     {
-                         "version":  "10.0.26200.8875",
-                         "availableDate":  "2026-07-14",
-                         "updateType":  "2026-07 B",
-                         "kb":  "KB5101650"
-                     },
-                     {
-                         "version":  "10.0.26200.8894",
-                         "availableDate":  "2026-07-18",
-                         "updateType":  "2026-07 OOB",
-                         "kb":  "KB5121767"
-                     },
-                     {
-                         "version":  "10.0.26200.8973",
-                         "availableDate":  "2026-07-28",
-                         "updateType":  "2026-07 D",
-                         "kb":  "KB5101684"
-                     },
-                     {
-                         "version":  "10.0.26200.9168",
-                         "availableDate":  "2026-08-11",
-                         "updateType":  "2026-08 B",
-                         "kb":  "KB5121003"
-                     },
-                     {
-                         "version":  "10.0.26200.9278",
-                         "availableDate":  "2026-08-27",
-                         "updateType":  "2026-08 D",
-                         "kb":  "KB5120998"
-                     },
-                     {
-                         "version":  "10.0.26200.9445",
-                         "availableDate":  "2026-09-08",
-                         "updateType":  "2026-09 B",
-                         "kb":  "KB5124008"
-                     },
-                     {
-                         "version":  "10.0.26200.9457",
-                         "availableDate":  "2026-09-14",
-                         "updateType":  "2026-09 OOB",
-                         "kb":  "KB5129195"
-                     },
-                     {
-                         "version":  "10.0.26200.9550",
-                         "availableDate":  "2026-09-22",
-                         "updateType":  "2026-09 D",
-                         "kb":  "KB5124010"
-                     },
-                     {
-                         "version":  "10.0.26200.9711",
-                         "availableDate":  "2026-10-13",
-                         "updateType":  "2026-10 B",
-                         "kb":  "KB5127648"
-                     },
-                     {
-                         "version":  "10.0.26200.9725",
-                         "availableDate":  "2026-10-26",
-                         "updateType":  "2026-10 OOB",
-                         "kb":  "KB5134133"
-                     },
-                     {
-                         "version":  "10.0.26200.9818",
-                         "availableDate":  "2026-10-28",
-                         "updateType":  "2026-10 D",
-                         "kb":  "KB5127936"
-                     },
-                     {
-                         "version":  "10.0.26200.9974",
-                         "availableDate":  "2026-11-10",
-                         "updateType":  "2026-11 B",
-                         "kb":  "KB5132061"
-                     },
-                     {
-                         "version":  "10.0.26300.9457",
-                         "availableDate":  "2026-09-29",
-                         "updateType":  "",
-                         "kb":  null
-                     },
-                     {
-                         "version":  "10.0.26300.9550",
-                         "availableDate":  "2026-09-29",
-                         "updateType":  "2026-09 D",
-                         "kb":  "KB5124010"
-                     },
-                     {
-                         "version":  "10.0.26300.9711",
-                         "availableDate":  "2026-10-13",
-                         "updateType":  "2026-10 B",
-                         "kb":  "KB5127648"
-                     },
-                     {
-                         "version":  "10.0.26300.9725",
-                         "availableDate":  "2026-10-26",
-                         "updateType":  "2026-10 OOB",
-                         "kb":  "KB5134133"
-                     },
-                     {
-                         "version":  "10.0.26300.9818",
-                         "availableDate":  "2026-10-28",
-                         "updateType":  "2026-10 D",
-                         "kb":  "KB5127936"
-                     },
-                     {
-                         "version":  "10.0.26300.9974",
-                         "availableDate":  "2026-11-10",
-                         "updateType":  "2026-11 B",
-                         "kb":  "KB5132061"
-                     }
-                 ]
+  "schemaVersion": 3,
+  "product": "Windows",
+  "supportedReleases": [
+    {
+      "release": "22H2",
+      "build": 19045
+    },
+    {
+      "release": "25H2",
+      "build": 26200
+    },
+    {
+      "release": "26H2",
+      "build": 26300
+    }
+  ],
+  "sources": [
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/release-health/release-information",
+      "commit": "d3bdb403e32955fc931c829072a78b115cbd72fc",
+      "sha256": "19EEBCEFE09644825DCB9DA45AAE99DABDDA8617DB25EE10109223DAEED80338",
+      "updatedAt": "2026-11-13T21:11:00.0000000Z"
+    },
+    {
+      "url": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+      "commit": "d3bdb403e32955fc931c829072a78b115cbd72fc",
+      "sha256": "6DFE7ACAB9FF92031BA3793DAB30A7152FB898A8277207BCD65C6347027F2A4B",
+      "updatedAt": "2026-11-13T21:11:00.0000000Z"
+    }
+  ],
+  "asOfDate": "2026-11-14",
+  "releases": [
+    {
+      "version": "10.0.19045.2130",
+      "availableDate": "2022-10-18",
+      "updateType": "2022-10 C",
+      "kb": null
+    },
+    {
+      "version": "10.0.19045.2251",
+      "availableDate": "2022-11-08",
+      "updateType": "2022-11 B",
+      "kb": "KB5019959"
+    },
+    {
+      "version": "10.0.19045.2311",
+      "availableDate": "2022-11-15",
+      "updateType": "2022-11 C",
+      "kb": "KB5020030"
+    },
+    {
+      "version": "10.0.19045.2364",
+      "availableDate": "2022-12-13",
+      "updateType": "2022-12 B",
+      "kb": "KB5021233"
+    },
+    {
+      "version": "10.0.19045.2486",
+      "availableDate": "2023-01-10",
+      "updateType": "2023-01 B",
+      "kb": "KB5022282"
+    },
+    {
+      "version": "10.0.19045.2546",
+      "availableDate": "2023-01-19",
+      "updateType": "2023-01 C",
+      "kb": "KB5019275"
+    },
+    {
+      "version": "10.0.19045.2604",
+      "availableDate": "2023-02-14",
+      "updateType": "2023-02 B",
+      "kb": "KB5022834"
+    },
+    {
+      "version": "10.0.19045.2673",
+      "availableDate": "2023-02-21",
+      "updateType": "2023-02 C",
+      "kb": "KB5022906"
+    },
+    {
+      "version": "10.0.19045.2728",
+      "availableDate": "2023-03-14",
+      "updateType": "2023-03 B",
+      "kb": "KB5023696"
+    },
+    {
+      "version": "10.0.19045.2788",
+      "availableDate": "2023-03-21",
+      "updateType": "2023-03 C",
+      "kb": "KB5023773"
+    },
+    {
+      "version": "10.0.19045.2846",
+      "availableDate": "2023-04-11",
+      "updateType": "2023-04 B",
+      "kb": "KB5025221"
+    },
+    {
+      "version": "10.0.19045.2913",
+      "availableDate": "2023-04-25",
+      "updateType": "2023-04 D",
+      "kb": "KB5025297"
+    },
+    {
+      "version": "10.0.19045.2965",
+      "availableDate": "2023-05-09",
+      "updateType": "2023-05 B",
+      "kb": "KB5026361"
+    },
+    {
+      "version": "10.0.19045.3031",
+      "availableDate": "2023-05-23",
+      "updateType": "2023-05 D",
+      "kb": "KB5026435"
+    },
+    {
+      "version": "10.0.19045.3086",
+      "availableDate": "2023-06-13",
+      "updateType": "2023-06 B",
+      "kb": "KB5027215"
+    },
+    {
+      "version": "10.0.19045.3155",
+      "availableDate": "2023-06-27",
+      "updateType": "2023-06 D",
+      "kb": "KB5027293"
+    },
+    {
+      "version": "10.0.19045.3208",
+      "availableDate": "2023-07-11",
+      "updateType": "2023-07 B",
+      "kb": "KB5028166"
+    },
+    {
+      "version": "10.0.19045.3271",
+      "availableDate": "2023-07-25",
+      "updateType": "2023-07 D",
+      "kb": "KB5028244"
+    },
+    {
+      "version": "10.0.19045.3324",
+      "availableDate": "2023-08-08",
+      "updateType": "2023-08 B",
+      "kb": "KB5029244"
+    },
+    {
+      "version": "10.0.19045.3393",
+      "availableDate": "2023-08-22",
+      "updateType": "2023-08 D",
+      "kb": "KB5029331"
+    },
+    {
+      "version": "10.0.19045.3448",
+      "availableDate": "2023-09-12",
+      "updateType": "2023-09 B",
+      "kb": "KB5030211"
+    },
+    {
+      "version": "10.0.19045.3516",
+      "availableDate": "2023-09-26",
+      "updateType": "2023-09 D",
+      "kb": "KB5030300"
+    },
+    {
+      "version": "10.0.19045.3570",
+      "availableDate": "2023-10-10",
+      "updateType": "2023-10 B",
+      "kb": "KB5031356"
+    },
+    {
+      "version": "10.0.19045.3636",
+      "availableDate": "2023-10-26",
+      "updateType": "2023-10 D",
+      "kb": "KB5031445"
+    },
+    {
+      "version": "10.0.19045.3693",
+      "availableDate": "2023-11-14",
+      "updateType": "2023-11 B",
+      "kb": "KB5032189"
+    },
+    {
+      "version": "10.0.19045.3758",
+      "availableDate": "2023-11-30",
+      "updateType": "2023-11 D",
+      "kb": "KB5032278"
+    },
+    {
+      "version": "10.0.19045.3803",
+      "availableDate": "2023-12-12",
+      "updateType": "2023-12 B",
+      "kb": "KB5033372"
+    },
+    {
+      "version": "10.0.19045.3930",
+      "availableDate": "2024-01-09",
+      "updateType": "2024-01 B",
+      "kb": "KB5034122"
+    },
+    {
+      "version": "10.0.19045.3996",
+      "availableDate": "2024-01-23",
+      "updateType": "2024-01 D",
+      "kb": "KB5034203"
+    },
+    {
+      "version": "10.0.19045.4046",
+      "availableDate": "2024-02-13",
+      "updateType": "2024-02 B",
+      "kb": "KB5034763"
+    },
+    {
+      "version": "10.0.19045.4123",
+      "availableDate": "2024-02-29",
+      "updateType": "2024-02 D",
+      "kb": "KB5034843"
+    },
+    {
+      "version": "10.0.19045.4170",
+      "availableDate": "2024-03-12",
+      "updateType": "2024-03 B",
+      "kb": "KB5035845"
+    },
+    {
+      "version": "10.0.19045.4239",
+      "availableDate": "2024-03-26",
+      "updateType": "2024-03 D",
+      "kb": "KB5035941"
+    },
+    {
+      "version": "10.0.19045.4291",
+      "availableDate": "2024-04-09",
+      "updateType": "2024-04 B",
+      "kb": "KB5036892"
+    },
+    {
+      "version": "10.0.19045.4355",
+      "availableDate": "2024-04-23",
+      "updateType": "2024-04 D",
+      "kb": "KB5036979"
+    },
+    {
+      "version": "10.0.19045.4412",
+      "availableDate": "2024-05-14",
+      "updateType": "2024-05 B",
+      "kb": "KB5037768"
+    },
+    {
+      "version": "10.0.19045.4474",
+      "availableDate": "2024-05-29",
+      "updateType": "2024-05 D",
+      "kb": "KB5037849"
+    },
+    {
+      "version": "10.0.19045.4529",
+      "availableDate": "2024-06-11",
+      "updateType": "2024-06 B",
+      "kb": "KB5039211"
+    },
+    {
+      "version": "10.0.19045.4598",
+      "availableDate": "2024-06-25",
+      "updateType": "2024-06 D",
+      "kb": "KB5039299"
+    },
+    {
+      "version": "10.0.19045.4651",
+      "availableDate": "2024-07-09",
+      "updateType": "2024-07 B",
+      "kb": "KB5040427"
+    },
+    {
+      "version": "10.0.19045.4717",
+      "availableDate": "2024-07-23",
+      "updateType": "2024-07 D",
+      "kb": "KB5040525"
+    },
+    {
+      "version": "10.0.19045.4780",
+      "availableDate": "2024-08-13",
+      "updateType": "2024-08 B",
+      "kb": "KB5041580"
+    },
+    {
+      "version": "10.0.19045.4842",
+      "availableDate": "2024-08-29",
+      "updateType": "2024-08 D",
+      "kb": "KB5041582"
+    },
+    {
+      "version": "10.0.19045.4894",
+      "availableDate": "2024-09-10",
+      "updateType": "2024-09 B",
+      "kb": "KB5043064"
+    },
+    {
+      "version": "10.0.19045.4957",
+      "availableDate": "2024-09-24",
+      "updateType": "2024-09 D",
+      "kb": "KB5043131"
+    },
+    {
+      "version": "10.0.19045.5011",
+      "availableDate": "2024-10-08",
+      "updateType": "2024-10 B",
+      "kb": "KB5044273"
+    },
+    {
+      "version": "10.0.19045.5073",
+      "availableDate": "2024-10-22",
+      "updateType": "2024-10 D",
+      "kb": "KB5045594"
+    },
+    {
+      "version": "10.0.19045.5131",
+      "availableDate": "2024-11-12",
+      "updateType": "2024-11 B",
+      "kb": "KB5046613"
+    },
+    {
+      "version": "10.0.19045.5198",
+      "availableDate": "2024-11-21",
+      "updateType": "2024-11 D",
+      "kb": "KB5046714"
+    },
+    {
+      "version": "10.0.19045.5247",
+      "availableDate": "2024-12-10",
+      "updateType": "2024-12 B",
+      "kb": "KB5048652"
+    },
+    {
+      "version": "10.0.19045.5371",
+      "availableDate": "2025-01-14",
+      "updateType": "2025-01 B",
+      "kb": "KB5049981"
+    },
+    {
+      "version": "10.0.19045.5440",
+      "availableDate": "2025-01-28",
+      "updateType": "2025-01 D",
+      "kb": "KB5050081"
+    },
+    {
+      "version": "10.0.19045.5487",
+      "availableDate": "2025-02-11",
+      "updateType": "2025-02 B",
+      "kb": "KB5051974"
+    },
+    {
+      "version": "10.0.19045.5555",
+      "availableDate": "2025-02-25",
+      "updateType": "2025-02 D",
+      "kb": "KB5052077"
+    },
+    {
+      "version": "10.0.19045.5608",
+      "availableDate": "2025-03-11",
+      "updateType": "2025-03 B",
+      "kb": "KB5053606"
+    },
+    {
+      "version": "10.0.19045.5679",
+      "availableDate": "2025-03-25",
+      "updateType": "2025-03 D",
+      "kb": "KB5053643"
+    },
+    {
+      "version": "10.0.19045.5737",
+      "availableDate": "2025-04-08",
+      "updateType": "2025-04 B",
+      "kb": "KB5055518"
+    },
+    {
+      "version": "10.0.19045.5796",
+      "availableDate": "2025-04-22",
+      "updateType": "2025-04 D",
+      "kb": "KB5055612"
+    },
+    {
+      "version": "10.0.19045.5854",
+      "availableDate": "2025-05-13",
+      "updateType": "2025-05 B",
+      "kb": "KB5058379"
+    },
+    {
+      "version": "10.0.19045.5856",
+      "availableDate": "2025-05-19",
+      "updateType": "2025-05 OOB",
+      "kb": "KB5061768"
+    },
+    {
+      "version": "10.0.19045.5859",
+      "availableDate": "2025-05-27",
+      "updateType": "2025-05 OOB",
+      "kb": "KB5061979"
+    },
+    {
+      "version": "10.0.19045.5917",
+      "availableDate": "2025-05-28",
+      "updateType": "2025-05 D",
+      "kb": "KB5058481"
+    },
+    {
+      "version": "10.0.19045.5965",
+      "availableDate": "2025-06-10",
+      "updateType": "2025-06 B",
+      "kb": "KB5060533"
+    },
+    {
+      "version": "10.0.19045.5968",
+      "availableDate": "2025-06-16",
+      "updateType": "2025-06 OOB",
+      "kb": "KB5063159"
+    },
+    {
+      "version": "10.0.19045.6036",
+      "availableDate": "2025-06-24",
+      "updateType": "2025-06 D",
+      "kb": "KB5061087"
+    },
+    {
+      "version": "10.0.19045.6093",
+      "availableDate": "2025-07-08",
+      "updateType": "2025-07 B",
+      "kb": "KB5062554"
+    },
+    {
+      "version": "10.0.19045.6159",
+      "availableDate": "2025-07-22",
+      "updateType": "2025-07 D",
+      "kb": "KB5062649"
+    },
+    {
+      "version": "10.0.19045.6216",
+      "availableDate": "2025-08-12",
+      "updateType": "2025-08 B",
+      "kb": "KB5063709"
+    },
+    {
+      "version": "10.0.19045.6218",
+      "availableDate": "2025-08-19",
+      "updateType": "2025-08 OOB",
+      "kb": "KB5066188"
+    },
+    {
+      "version": "10.0.19045.6282",
+      "availableDate": "2025-08-26",
+      "updateType": "2025-08 D",
+      "kb": "KB5063842"
+    },
+    {
+      "version": "10.0.19045.6332",
+      "availableDate": "2025-09-09",
+      "updateType": "2025-09 B",
+      "kb": "KB5065429"
+    },
+    {
+      "version": "10.0.19045.6396",
+      "availableDate": "2025-09-25",
+      "updateType": "2025-09 D",
+      "kb": "KB5066198"
+    },
+    {
+      "version": "10.0.19045.6456",
+      "availableDate": "2025-10-14",
+      "updateType": "2025-10 B",
+      "kb": "KB5066791"
+    },
+    {
+      "version": "10.0.19045.6466",
+      "availableDate": "2025-11-11",
+      "updateType": "2025-11 OOB",
+      "kb": "KB5071959"
+    },
+    {
+      "version": "10.0.19045.6575",
+      "availableDate": "2025-11-11",
+      "updateType": "2025-11 B",
+      "kb": "KB5068781"
+    },
+    {
+      "version": "10.0.19045.6691",
+      "availableDate": "2025-12-09",
+      "updateType": "2025-12 B",
+      "kb": "KB5071546"
+    },
+    {
+      "version": "10.0.19045.6693",
+      "availableDate": "2025-12-18",
+      "updateType": "2025-12 OOB",
+      "kb": "KB5074976"
+    },
+    {
+      "version": "10.0.19045.6809",
+      "availableDate": "2026-01-13",
+      "updateType": "2026-01 B",
+      "kb": "KB5073724"
+    },
+    {
+      "version": "10.0.19045.6811",
+      "availableDate": "2026-01-17",
+      "updateType": "2026-01 OOB",
+      "kb": "KB5077796"
+    },
+    {
+      "version": "10.0.19045.6812",
+      "availableDate": "2026-01-24",
+      "updateType": "2026-01 OOB",
+      "kb": "KB5078129"
+    },
+    {
+      "version": "10.0.19045.6937",
+      "availableDate": "2026-02-10",
+      "updateType": "2026-02 B",
+      "kb": "KB5075912"
+    },
+    {
+      "version": "10.0.19045.7058",
+      "availableDate": "2026-03-10",
+      "updateType": "2026-03 B",
+      "kb": "KB5078885"
+    },
+    {
+      "version": "10.0.19045.7184",
+      "availableDate": "2026-04-14",
+      "updateType": "2026-04 B",
+      "kb": "KB5082200"
+    },
+    {
+      "version": "10.0.19045.7291",
+      "availableDate": "2026-05-12",
+      "updateType": "2026-05 B",
+      "kb": "KB5087544"
+    },
+    {
+      "version": "10.0.19045.7417",
+      "availableDate": "2026-06-09",
+      "updateType": "2026-06 B",
+      "kb": "KB5094127"
+    },
+    {
+      "version": "10.0.19045.7548",
+      "availableDate": "2026-07-14",
+      "updateType": "2026-07 B",
+      "kb": "KB5099539"
+    },
+    {
+      "version": "10.0.19045.7663",
+      "availableDate": "2026-08-11",
+      "updateType": "2026-08 B",
+      "kb": "KB5120249"
+    },
+    {
+      "version": "10.0.19045.7725",
+      "availableDate": "2026-09-08",
+      "updateType": "2026-09 B",
+      "kb": "KB5122878"
+    },
+    {
+      "version": "10.0.19045.7727",
+      "availableDate": "2026-09-14",
+      "updateType": "2026-09 OOB",
+      "kb": "KB5129236"
+    },
+    {
+      "version": "10.0.19045.7807",
+      "availableDate": "2026-10-13",
+      "updateType": "2026-10 B",
+      "kb": "KB5126657"
+    },
+    {
+      "version": "10.0.19045.7811",
+      "availableDate": "2026-10-26",
+      "updateType": "2026-10 OOB",
+      "kb": "KB5134125"
+    },
+    {
+      "version": "10.0.19045.7846",
+      "availableDate": "2026-11-10",
+      "updateType": "2026-11 B",
+      "kb": "KB5131096"
+    },
+    {
+      "version": "10.0.19045.7850",
+      "availableDate": "2026-11-13",
+      "updateType": "2026-11 OOB",
+      "kb": "KB5136493"
+    },
+    {
+      "version": "10.0.26200.6584",
+      "availableDate": "2025-09-30",
+      "updateType": "",
+      "kb": null
+    },
+    {
+      "version": "10.0.26200.6899",
+      "availableDate": "2025-10-14",
+      "updateType": "2025-10 B",
+      "kb": "KB5066835"
+    },
+    {
+      "version": "10.0.26200.6901",
+      "availableDate": "2025-10-20",
+      "updateType": "2025-10 OOB",
+      "kb": "KB5070773"
+    },
+    {
+      "version": "10.0.26200.7019",
+      "availableDate": "2025-10-28",
+      "updateType": "2025-10 D",
+      "kb": "KB5067036"
+    },
+    {
+      "version": "10.0.26200.7171",
+      "availableDate": "2025-11-11",
+      "updateType": "2025-11 B",
+      "kb": "KB5068861"
+    },
+    {
+      "version": "10.0.26200.7309",
+      "availableDate": "2025-12-01",
+      "updateType": "2025-11 D",
+      "kb": "KB5070311"
+    },
+    {
+      "version": "10.0.26200.7462",
+      "availableDate": "2025-12-09",
+      "updateType": "2025-12 B",
+      "kb": "KB5072033"
+    },
+    {
+      "version": "10.0.26200.7623",
+      "availableDate": "2026-01-13",
+      "updateType": "2026-01 B",
+      "kb": "KB5074109"
+    },
+    {
+      "version": "10.0.26200.7627",
+      "availableDate": "2026-01-17",
+      "updateType": "2026-01 OOB",
+      "kb": "KB5077744"
+    },
+    {
+      "version": "10.0.26200.7628",
+      "availableDate": "2026-01-24",
+      "updateType": "2026-01 OOB",
+      "kb": "KB5078127"
+    },
+    {
+      "version": "10.0.26200.7705",
+      "availableDate": "2026-01-29",
+      "updateType": "2026-01 D",
+      "kb": "KB5074105"
+    },
+    {
+      "version": "10.0.26200.7840",
+      "availableDate": "2026-02-10",
+      "updateType": "2026-02 B",
+      "kb": "KB5077181"
+    },
+    {
+      "version": "10.0.26200.7922",
+      "availableDate": "2026-02-24",
+      "updateType": "2026-02 D",
+      "kb": "KB5077241"
+    },
+    {
+      "version": "10.0.26200.8037",
+      "availableDate": "2026-03-10",
+      "updateType": "2026-03 B",
+      "kb": "KB5079473"
+    },
+    {
+      "version": "10.0.26200.8039",
+      "availableDate": "2026-03-21",
+      "updateType": "2026-03 OOB",
+      "kb": "KB5085516"
+    },
+    {
+      "version": "10.0.26200.8116",
+      "availableDate": "2026-03-26",
+      "updateType": "2026-03 D",
+      "kb": "KB5079391"
+    },
+    {
+      "version": "10.0.26200.8117",
+      "availableDate": "2026-03-31",
+      "updateType": "2026-03 OOB",
+      "kb": "KB5086672"
+    },
+    {
+      "version": "10.0.26200.8246",
+      "availableDate": "2026-04-14",
+      "updateType": "2026-04 B",
+      "kb": "KB5083769"
+    },
+    {
+      "version": "10.0.26200.8328",
+      "availableDate": "2026-04-30",
+      "updateType": "2026-04 D",
+      "kb": "KB5083631"
+    },
+    {
+      "version": "10.0.26200.8457",
+      "availableDate": "2026-05-12",
+      "updateType": "2026-05 B",
+      "kb": "KB5089549"
+    },
+    {
+      "version": "10.0.26200.8524",
+      "availableDate": "2026-05-26",
+      "updateType": "2026-05 D",
+      "kb": "KB5089573"
+    },
+    {
+      "version": "10.0.26200.8655",
+      "availableDate": "2026-06-09",
+      "updateType": "2026-06 B",
+      "kb": "KB5094126"
+    },
+    {
+      "version": "10.0.26200.8737",
+      "availableDate": "2026-06-23",
+      "updateType": "2026-06 D",
+      "kb": "KB5095093"
+    },
+    {
+      "version": "10.0.26200.8875",
+      "availableDate": "2026-07-14",
+      "updateType": "2026-07 B",
+      "kb": "KB5101650"
+    },
+    {
+      "version": "10.0.26200.8894",
+      "availableDate": "2026-07-18",
+      "updateType": "2026-07 OOB",
+      "kb": "KB5121767"
+    },
+    {
+      "version": "10.0.26200.8973",
+      "availableDate": "2026-07-28",
+      "updateType": "2026-07 D",
+      "kb": "KB5101684"
+    },
+    {
+      "version": "10.0.26200.9168",
+      "availableDate": "2026-08-11",
+      "updateType": "2026-08 B",
+      "kb": "KB5121003"
+    },
+    {
+      "version": "10.0.26200.9278",
+      "availableDate": "2026-08-27",
+      "updateType": "2026-08 D",
+      "kb": "KB5120998"
+    },
+    {
+      "version": "10.0.26200.9445",
+      "availableDate": "2026-09-08",
+      "updateType": "2026-09 B",
+      "kb": "KB5124008"
+    },
+    {
+      "version": "10.0.26200.9457",
+      "availableDate": "2026-09-14",
+      "updateType": "2026-09 OOB",
+      "kb": "KB5129195"
+    },
+    {
+      "version": "10.0.26200.9550",
+      "availableDate": "2026-09-22",
+      "updateType": "2026-09 D",
+      "kb": "KB5124010"
+    },
+    {
+      "version": "10.0.26200.9711",
+      "availableDate": "2026-10-13",
+      "updateType": "2026-10 B",
+      "kb": "KB5127648"
+    },
+    {
+      "version": "10.0.26200.9725",
+      "availableDate": "2026-10-26",
+      "updateType": "2026-10 OOB",
+      "kb": "KB5134133"
+    },
+    {
+      "version": "10.0.26200.9818",
+      "availableDate": "2026-10-28",
+      "updateType": "2026-10 D",
+      "kb": "KB5127936"
+    },
+    {
+      "version": "10.0.26200.9974",
+      "availableDate": "2026-11-10",
+      "updateType": "2026-11 B",
+      "kb": "KB5132061"
+    },
+    {
+      "version": "10.0.26300.9457",
+      "availableDate": "2026-09-29",
+      "updateType": "",
+      "kb": null
+    },
+    {
+      "version": "10.0.26300.9550",
+      "availableDate": "2026-09-29",
+      "updateType": "2026-09 D",
+      "kb": "KB5124010"
+    },
+    {
+      "version": "10.0.26300.9711",
+      "availableDate": "2026-10-13",
+      "updateType": "2026-10 B",
+      "kb": "KB5127648"
+    },
+    {
+      "version": "10.0.26300.9725",
+      "availableDate": "2026-10-26",
+      "updateType": "2026-10 OOB",
+      "kb": "KB5134133"
+    },
+    {
+      "version": "10.0.26300.9818",
+      "availableDate": "2026-10-28",
+      "updateType": "2026-10 D",
+      "kb": "KB5127936"
+    },
+    {
+      "version": "10.0.26300.9974",
+      "availableDate": "2026-11-10",
+      "updateType": "2026-11 B",
+      "kb": "KB5132061"
+    }
+  ]
 }

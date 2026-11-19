@@ -1048,7 +1048,7 @@ iso-edition-selection = Apenas as edições compatíveis são incluídas. Durant
 detail-windows-preview = As compilações Insider não são compatíveis. Use uma versão pública do Windows 11.
 detail-windows-release-unknown = O Atlas não conseguiu confirmar se esta compilação do Windows é uma versão pública. Conecte-se à internet e verifique novamente.
 # $build is this PC's Windows build and update number, such as 26300.9807 (text).
-detail-windows-release-unlisted = A compilação { $build } não está na lista de versões públicas do Windows 11 da Microsoft, por isso o Atlas ainda não pode ser instalado nela. As compilações Release Preview e outras compilações de versão prévia não são compatíveis. Escolha Verificar novamente quando a Microsoft incluir esta compilação na lista.
+detail-windows-release-unlisted = A compilação { $build } não está na lista de versões públicas do Windows da Microsoft, por isso o Atlas ainda não pode ser instalado nela. As compilações Release Preview e outras compilações de versão prévia não são compatíveis. Escolha Verificar novamente quando a Microsoft incluir esta compilação na lista.
 iso-release-unknown = O Atlas não conseguiu confirmar se esta ISO é uma versão pública do Windows 11 compatível com o pacote do Atlas. Conecte-se à internet e escolha Verificar arquivos novamente. Se ainda falhar, baixe a ISO da Microsoft de novo.
 iso-release-unlisted = A compilação do Windows 11 desta ISO não está na lista de versões públicas da Microsoft. As compilações Release Preview e outras compilações de versão prévia não são compatíveis. Baixe a ISO da Microsoft ou escolha Verificar arquivos novamente quando a Microsoft incluir esta compilação na lista.
 prepare-previous-worker = As atualizações iniciadas anteriormente ainda estão em andamento. O Atlas aguardará a conclusão delas e depois você poderá buscar atualizações novamente.
@@ -1201,11 +1201,11 @@ home-end-of-updates-past-title = O Windows 11, versão { $current }, não recebe
 home-end-of-updates-message = Atualizar para o Atlas { $version } também leva este PC para o Windows 11, versão { $release }, que recebe atualizações de segurança até { $until }.
 # Home, when this Windows can't take the Atlas version at all. $product is Windows'
 # own name for the edition, such as Windows 11 Home.
-install-windows-edition = O Atlas { $version } funciona com o Windows 11 Pro, Enterprise e Education. Este PC tem o { $product }, então o Atlas não pode ser instalado nele.
+install-windows-edition = O Atlas { $version } funciona com o Windows 10 22H2 ou Windows 11 (Pro, Enterprise e Education). Este PC tem o { $product }, então o Atlas não pode ser instalado nele.
 # The same, on a version whose security updates end. $date is a date.
-install-windows-edition-ending = O Atlas { $version } funciona com o Windows 11 Pro, Enterprise e Education. Este PC tem o { $product }, então o Atlas não pode ser instalado nele. O Windows 11, versão { $current }, deixa de receber atualizações de segurança em { $date }. O Windows Update pode levar este PC para uma versão mais recente.
+install-windows-edition-ending = O Atlas { $version } funciona com o Windows 10 22H2 ou Windows 11 (Pro, Enterprise e Education). Este PC tem o { $product }, então o Atlas não pode ser instalado nele. O Windows 11, versão { $current }, deixa de receber atualizações de segurança em { $date }. O Windows Update pode levar este PC para uma versão mais recente.
 # $releases lists the supported releases, such as "25H2 ou 26H2".
-install-windows-no-path = O Atlas { $version } requer o Windows 11, versão { $releases }, e o Windows Update não consegue levar este PC até ela a partir do Windows que ele tem. Para usar o Atlas { $version }, faça backup dos seus arquivos e reinstale o Windows com uma ISO com o Atlas.
+install-windows-no-path = O Atlas { $version } requer o Windows, versão { $releases }, e o Windows Update não consegue levar este PC até ela a partir do Windows que ele tem. Para usar o Atlas { $version }, faça backup dos seus arquivos e reinstale o Windows com uma ISO com o Atlas.
 # Home, when Atlas changed Windows Update settings for an update and hasn't put them back.
 home-update-access-title = As configurações do Windows Update foram alteradas para a atualização do Atlas
 # When the last check found no offer yet.

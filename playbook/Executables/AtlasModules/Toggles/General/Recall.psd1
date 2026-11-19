@@ -2,6 +2,9 @@
     Name        = 'Recall'
     Description = 'Recall and Windows AI data analysis through the DisableAIDataAnalysis policy.'
     Elevation   = 'Admin'
+    # Recall and the WindowsAI policy are Windows 11 features; the gate keeps the
+    # engine from writing (or recording) these values on Windows 10.
+    MinBuild    = 22000
     States      = @(
         @{
             Name       = 'Disable'

@@ -947,7 +947,7 @@ iso-edition-selection = มีเฉพาะรุ่นที่รองร�
 detail-windows-preview = ไม่รองรับบิลด์ Insider ให้ใช้ Windows 11 รุ่นที่เผยแพร่ทั่วไป
 detail-windows-release-unknown = Atlas ยืนยันไม่ได้ว่าบิลด์ Windows นี้เป็นรุ่นที่เผยแพร่ทั่วไป เชื่อมต่ออินเทอร์เน็ต แล้วตรวจสอบอีกครั้ง
 # $build is this PC's Windows build and update number, such as 26300.9807 (text).
-detail-windows-release-unlisted = บิลด์ { $build } ไม่อยู่ในรายการ Windows 11 รุ่นที่เผยแพร่ทั่วไปของ Microsoft จึงยังติดตั้ง Atlas บนบิลด์นี้ไม่ได้ ไม่รองรับบิลด์ Release Preview และบิลด์ตัวอย่างอื่น ๆ เลือก ตรวจสอบอีกครั้ง เมื่อ Microsoft เพิ่มบิลด์นี้ลงในรายการแล้ว
+detail-windows-release-unlisted = บิลด์ { $build } ไม่อยู่ในรายการ Windows รุ่นที่เผยแพร่ทั่วไปของ Microsoft จึงยังติดตั้ง Atlas บนบิลด์นี้ไม่ได้ ไม่รองรับบิลด์ Release Preview และบิลด์ตัวอย่างอื่น ๆ เลือก ตรวจสอบอีกครั้ง เมื่อ Microsoft เพิ่มบิลด์นี้ลงในรายการแล้ว
 iso-release-unknown = Atlas ยืนยันไม่ได้ว่า ISO นี้เป็น Windows 11 รุ่นที่เผยแพร่ทั่วไปซึ่งแพ็กเกจ Atlas รองรับ เชื่อมต่ออินเทอร์เน็ต แล้วเลือก ตรวจสอบไฟล์ อีกครั้ง หากยังไม่สำเร็จ ให้ดาวน์โหลด ISO จาก Microsoft ใหม่
 iso-release-unlisted = บิลด์ Windows 11 ใน ISO นี้ไม่อยู่ในรายการรุ่นที่เผยแพร่ทั่วไปของ Microsoft ไม่รองรับบิลด์ Release Preview และบิลด์ตัวอย่างอื่น ๆ ดาวน์โหลด ISO จาก Microsoft หรือเลือก ตรวจสอบไฟล์ อีกครั้ง เมื่อ Microsoft เพิ่มบิลด์นี้ลงในรายการแล้ว
 prepare-previous-worker = การอัปเดตที่เริ่มไว้ก่อนหน้านี้ยังทำงานอยู่ Atlas จะรอให้เสร็จ แล้วคุณจึงตรวจหาการอัปเดตอีกครั้งได้
@@ -1080,11 +1080,11 @@ home-end-of-updates-past-title = Windows 11 เวอร์ชัน { $current 
 home-end-of-updates-message = การอัปเดตเป็น Atlas { $version } จะอัปเดตพีซีเครื่องนี้เป็น Windows 11 เวอร์ชัน { $release } ด้วย ซึ่งจะได้รับการอัปเดตความปลอดภัยจนถึงวันที่ { $until }
 # Home, when this Windows can't take the Atlas version at all. $product is Windows'
 # own name for the edition, such as Windows 11 Home.
-install-windows-edition = Atlas { $version } ใช้ได้กับ Windows 11 Pro, Enterprise และ Education แต่พีซีเครื่องนี้ใช้ { $product } Atlas จึงติดตั้งบนพีซีเครื่องนี้ไม่ได้
+install-windows-edition = Atlas { $version } ใช้ได้กับ Windows 10 22H2 หรือ Windows 11 (Pro, Enterprise และ Education) แต่พีซีเครื่องนี้ใช้ { $product } Atlas จึงติดตั้งบนพีซีเครื่องนี้ไม่ได้
 # The same, on a version whose security updates end. $date is a date.
-install-windows-edition-ending = Atlas { $version } ใช้ได้กับ Windows 11 Pro, Enterprise และ Education แต่พีซีเครื่องนี้ใช้ { $product } Atlas จึงติดตั้งบนพีซีเครื่องนี้ไม่ได้ Windows 11 เวอร์ชัน { $current } จะหยุดรับการอัปเดตความปลอดภัยในวันที่ { $date } Windows Update อัปเดตพีซีเครื่องนี้เป็นเวอร์ชันที่ใหม่กว่าได้
+install-windows-edition-ending = Atlas { $version } ใช้ได้กับ Windows 10 22H2 หรือ Windows 11 (Pro, Enterprise และ Education) แต่พีซีเครื่องนี้ใช้ { $product } Atlas จึงติดตั้งบนพีซีเครื่องนี้ไม่ได้ Windows 11 เวอร์ชัน { $current } จะหยุดรับการอัปเดตความปลอดภัยในวันที่ { $date } Windows Update อัปเดตพีซีเครื่องนี้เป็นเวอร์ชันที่ใหม่กว่าได้
 # $releases lists the supported releases, such as "25H2 or 26H2".
-install-windows-no-path = Atlas { $version } ต้องใช้ Windows 11 เวอร์ชัน { $releases } แต่ Windows Update อัปเดตพีซีเครื่องนี้จาก Windows ที่มีอยู่ไปเป็นเวอร์ชันนั้นไม่ได้ หากต้องการใช้ Atlas { $version } ให้สำรองไฟล์ของคุณแล้วติดตั้ง Windows ใหม่ด้วย ISO พร้อม Atlas
+install-windows-no-path = Atlas { $version } ต้องใช้ Windows เวอร์ชัน { $releases } แต่ Windows Update อัปเดตพีซีเครื่องนี้จาก Windows ที่มีอยู่ไปเป็นเวอร์ชันนั้นไม่ได้ หากต้องการใช้ Atlas { $version } ให้สำรองไฟล์ของคุณแล้วติดตั้ง Windows ใหม่ด้วย ISO พร้อม Atlas
 # Home, when Atlas changed Windows Update settings for an update and hasn't put them back.
 home-update-access-title = การตั้งค่า Windows Update ถูกเปลี่ยนไว้สำหรับการอัปเดต Atlas
 # When the last check found no offer yet.

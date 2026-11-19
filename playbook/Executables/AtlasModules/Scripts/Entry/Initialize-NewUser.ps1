@@ -423,15 +423,16 @@ if ($setupMarker -lt 1) {
         # The old context menu and Gallery are Windows 11 shell features. On Windows 10
         # the default context menu is already the "old" one, and Gallery does not exist;
         # running their Windows 11 launchers there would write values Windows 10 ignores.
-        $windowsBuild = 0
-        $null = [int]::TryParse(
-            [string](Get-ItemProperty -Path 'HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion' `
-                    -Name CurrentBuildNumber -ErrorAction SilentlyContinue).CurrentBuildNumber,
-            [ref]$windowsBuild)
-        $isWindows11 = $windowsBuild -ge 22000 -or $windowsBuild -eq 0
+        # An unreadable build (0) skips them: fail closed, so a transient registry read
+        # failure cannot make the Windows 11 launchers run on Windows 10.
+        $windowsBuild = [int](Get-AtlasContext).WindowsBuild
+        $isWindows11 = $windowsBuild -ge 22000
         if ($isWindows11) {
             Invoke-AtlasDesktopCommand '4. Interface Tweaks\Context Menus\Windows 11\Old Context Menu (default).cmd'
             Invoke-AtlasDesktopCommand '4. Interface Tweaks\File Explorer Customization\Gallery\Disable Gallery (default).cmd'
+        }
+        elseif ($windowsBuild -le 0) {
+            Write-Warning "The Windows build number could not be read; skipping the Windows 11 shell launchers (old context menu, Gallery)."
         }
 
         Set-AtlasTheme -Path (Join-Path $windir 'Resources\Themes\atlas-v0.5.x-dark.theme')
